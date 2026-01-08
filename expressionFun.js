@@ -1,3 +1,4 @@
-const kirimPesan = (nama, waktu) => console.log(`Selamat ${waktu}, ${nama}!`);
+const kirimPesan = (nama, waktu = "Siang") => `Selamat ${waktu}, ${nama}!`;
 
-kirimPesan("Gilang", "Pagi");
+console.log(kirimPesan("Gilang", "Pagi"));
+console.log(kirimPesan("Raditya"));
