@@ -1,13 +1,14 @@
 const listBarang = ["Kopi", "Gula", "Susu"];
 const liatHarga = [5000, 7000, 3000];
 
-const cekNama = (nama) => {
+const beliBarang = (nama, jumlah) => {
   for (let i = 0; i < listBarang.length; i++) {
     if (listBarang[i] === nama) {
-      return `Harga ${listBarang[i]} adalah Rp.${liatHarga[i]}`;
+        let total = liatHarga[i] * jumlah;
+        return `Harga ${listBarang[i]} adalah Rp.${total}`;
     }
   }
   return `barang tidak tersedia`;
 };
 
-console.log(cekNama("Kopi"));
+console.log(beliBarang("Kopi", 2));
