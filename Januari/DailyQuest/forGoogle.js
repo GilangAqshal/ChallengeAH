@@ -10,4 +10,4 @@ const modul = (input) => {
     return `Tidak bisa kah`
 }
 
-console.log(modul('Golang'))
+console.log(modul('Golang'));
