@@ -8,8 +8,8 @@
  *    "Halo! Nama saya Fulan. Saya tinggal di Jakarta.".
  *
  * 3. Argumen `origin` boleh kosong dengan nilai default adalah "Bandung".
- * 4. Buatlah variabel bernama `rahmat` yang menampung nilai dari hasil pemanggilan fungsi `hello`
- *    yang diberikan argumen name = 'Rahmat' dan origin = 'Semarang'.
+ * 4. Buatlah variabel bernama `gilang` yang menampung nilai dari hasil pemanggilan fungsi `hello`
+ *    yang diberikan argumen name = 'gilang' dan origin = 'Semarang'.
  * 5. Buatlah variabel bernama `indra` yang menampung nilai dari hasil pemanggilan fungsi `hello`
  *    yang diberikan argumen name = 'Indra' tanpa memberikan nilai origin.
  */
@@ -17,10 +17,10 @@ const hello = (name, origin = "Bandung") => {
     return "Halo! Nama saya " +name+ ". Saya tinggal di "+origin+".";
 }
 
-const rahmat = hello("Rahmat", "Semarang");
+const gilang = hello("gilang", "Semarang");
 const indra = hello("Indra");
 
-console.log(rahmat);
+console.log(gilang);
 console.log(indra);
 
 
@@ -35,12 +35,12 @@ console.log(indra);
 //   return `Halo! Nama Saya ${name}. Saya tinggal di ${origin}.`;
 // };
 
-// const rahmat = hello("Rahmat", "Semarang");
+// const gilang = hello("gilang", "Semarang");
 
 // const indra = hello("Indra");
 
 // //outpout
 
-// console.log(rahmat);
+// console.log(gilang);
 
 // console.log(indra);
