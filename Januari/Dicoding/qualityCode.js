@@ -1,18 +1,12 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert';
-import { add } from './calculator.mjs';
- 
-describe('Calculator', () => {
-  it('should add correctly', () => {
-    // Arrange
-    const operandA = 1;
-    const operandB = 1;
- 
-    // Action
-    const actualValue = add(operandA, operandB);
- 
-    // Assert
-    const expectedValue = 2;
-    assert.equal(actualValue, expectedValue);
-  });
-});
+const fruit = ['Apple', 'Avocado', 'Pineapple'];
+const vegetables = ['Tomato', 'Mentimun', 'Corn'];
+
+const food = (index) => {
+  for(let i = index; i < fruit.length; i++){
+      console.log(`Makanan Ke-${i + 1}  Saya adalah ${fruit[i]} & ${vegetables[i]}`);
+  }
+
+}  
+// console.log("Tidak ada makanan");
+
+food(0);
