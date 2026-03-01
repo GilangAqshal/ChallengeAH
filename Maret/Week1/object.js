@@ -3,5 +3,5 @@ const user = {
   level: "pro"
 };
 
-console.log(user[name]);
+console.log(user.name);
 // Ekspektasi: Mamayo.
