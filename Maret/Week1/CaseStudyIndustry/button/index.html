@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button</title>
+    <style>
+        .subscribed {
+        background-color: green;
+        color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <button id="subBtn">Subscribe</button>
+
+    <script>
+        const button = document.getElementById("subBtn");
+
+        let clickCount = 0;
+
+        button.addEventListener("click", () => {
+        clickCount++;
+
+        button.classList.toggle("subscribed");
+
+        if (button.classList.contains("subscribed")) {
+            button.textContent = "Subscribed";
+        } else {
+            button.textContent = "Subscribe";
+        }
+
+        if (clickCount > 5) {
+            alert("Stop Spamming!");
+        }
+        });
+    </script>
+</body>
+</html>

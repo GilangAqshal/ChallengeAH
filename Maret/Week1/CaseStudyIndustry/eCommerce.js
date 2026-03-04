@@ -9,7 +9,7 @@ const total = cart
 let finalPrice = total;
 
 if (total > 100000) {
-  finalPrice = total * 0.1 ;
+  finalPrice = total - (total * 0.1) ;
 }
 
 console.log(finalPrice);
