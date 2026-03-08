@@ -1,60 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Mini Cart</title>
-  <style>
-    body{
-            font-family: Arial;
-            }
+  <head>
+    <title>Mini Cart</title>
+    <style>
+      body {
+        font-family: Arial;
+      }
 
-            button{
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-            }
+      button {
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+      }
 
-            #total{
-            font-weight: bold;
-            color: green;
-            }
-  </style>
-</head>
-<body>
+      #total {
+        font-weight: bold;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Shopping Cart</h2>
 
-<h2>Shopping Cart</h2>
+    <button onclick="addItem('mouse', 50000)">Add Mouse</button>
+    <button onclick="addItem('keyboard', 150000)">Add Keyboard</button>
+    <button onclick="addItem('monitor', 250000)">Add Monitor</button>
 
-<button onclick="addItem('mouse', 50000)">Add Mouse</button>
-<button onclick="addItem('keyboard', 150000)">Add Keyboard</button>
+    <p>Items: <span id="count">0</span></p>
+    <p>Total: Rp <span id="total">0</span></p>
+    <script>
+      const cart = [];
 
-<p>Items: <span id="count">0</span></p>
-<p>Total: Rp <span id="total">0</span></p>
-<script>
-    const cart = [];
-
-        function addItem(name, price){
-
+      function addItem(name, price) {
         cart.push({
-            name: name,
-            price: price
+          name: name,
+          price: price,
         });
 
         document.getElementById("count").textContent = cart.length;
 
         updateTotal();
-        }
+      }
 
-        function updateTotal(){
-
+      function updateTotal() {
         const total = cart.reduce((sum, item) => sum + item.price, 0);
 
         let finalPrice = total;
 
-        if (total > 200000){
-            finalPrice = total - (total * 0.1);
+        if (total > 250000) {
+          finalPrice = total - total * 0.1;
         }
 
-        document.getElementById("total").textContent = finalPrice.toLocaleString("id-ID");
-        }
-</script>
-</body>
+        document.getElementById("total").textContent =
+          finalPrice.toLocaleString("id-ID");
+      }
+    </script>
+  </body>
 </html>
