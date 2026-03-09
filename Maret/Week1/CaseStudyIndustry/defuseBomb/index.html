@@ -43,12 +43,21 @@
 
         timerText.textContent = timeLeft;
 
+        if (timeLeft <= 3) {
+          timerText.style.color = "red";
+        } else if (timeLeft <= 6 && timeLeft >= 4) {
+          timerText.style.color = "orange";
+        } else if (timeLeft <= 11 && timeLeft >= 7) {
+          timerText.style.color = "green";
+        }
+
         if (timeLeft === 0) {
           gameOver = true;
 
           clearInterval(timer);
 
           result.textContent = "BOOM 💥";
+          result.style.color = "red";
         }
       }, 1000);
 
