@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Defuse The Bomb</title>
+    <style>
+      body {
+        font-family: Arial;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      button {
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      #result {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>💣 Defuse The Bomb</h1>
+
+    <p>Time Left: <span id="timer">10</span></p>
+
+    <button id="defuseBtn">Cut The Wire</button>
+
+    <p id="result"></p>
+
+    <script>
+      let timeLeft = 10;
+      let gameOver = false;
+
+      const timerText = document.getElementById("timer");
+      const button = document.getElementById("defuseBtn");
+      const result = document.getElementById("result");
+
+      const timer = setInterval(() => {
+        timeLeft--;
+
+        timerText.textContent = timeLeft;
+
+        if (timeLeft === 0) {
+          gameOver = true;
+
+          clearInterval(timer);
+
+          result.textContent = "BOOM 💥";
+        }
+      }, 1000);
+
+      button.addEventListener("click", () => {
+        if (gameOver) return;
+
+        gameOver = true;
+
+        clearInterval(timer);
+
+        result.textContent = "Bomb Defused! You are a Hero! 🎖️";
+      });
+    </script>
+  </body>
+</html>
