@@ -18,6 +18,13 @@ nav a {
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
+
+  color: white;
+}
+
+nav {
+  background-color: #00a2c6;
+  padding: 5px;
 }
 
 nav a:hover {
@@ -43,4 +50,18 @@ nav a:hover {
   border-radius: 5px;
   padding: 20px;
   margin-top: 25px;
+}
+
+.jumbotron {
+  font-size: 20px;
+  padding: 20px;
+  background-color: #00c8eb;
+  text-align: center;
+  color: aliceblue;
+}
+
+nav li {
+  display: inline;
+  list-style-type: none;
+  margin-right: 25px;
 }
