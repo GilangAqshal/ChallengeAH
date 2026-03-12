@@ -1,9 +1,16 @@
 body {
   font-family: "Quicksand", sans-serif;
+
+  margin: 0;
+  padding: 0;
 }
 h2,
 h3 {
   color: #00a2c6;
+}
+
+main {
+  padding: 20px;
 }
 
 footer {
