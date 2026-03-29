@@ -6,9 +6,7 @@
  * Catatan.
  * Jangan ubah kode apa pun yang sudah tersedia sebelumnya
  */
-import unique from "./util.js";
-import { splitString } from "./util.js";
-
+import unique, { splitString } from "./utils.js";
 const string = "saippuakivikauppias";
 const array = splitString(string);
 const uniqueArray = unique(array);
