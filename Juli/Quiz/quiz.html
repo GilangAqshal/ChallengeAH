@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis: Struktur Diskrit — Pertemuan 9–14</title>
+<style>
+  :root{
+    --ink:#1b1f23;
+    --paper:#f6f4ee;
+    --panel:#ffffff;
+    --rule:#d8d3c4;
+    --accent:#2f5d50;      /* deep pine green */
+    --accent-2:#b3542c;    /* burnt sienna, used sparingly */
+    --correct:#2f5d50;
+    --correct-bg:#e5efe9;
+    --wrong:#a3372a;
+    --wrong-bg:#f6e6e2;
+    --muted:#6b6558;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family: var(--serif);
+    line-height:1.5;
+    padding: 0 0 80px;
+  }
+
+  /* ===== Header ===== */
+  header{
+    border-bottom: 3px solid var(--ink);
+    padding: 36px 24px 22px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .kicker{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin: 0 0 10px;
+  }
+  h1{
+    font-size: 38px;
+    margin: 0 0 6px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .subtitle{
+    color: var(--muted);
+    font-size: 15.5px;
+    margin: 0 0 18px;
+    max-width: 62ch;
+  }
+  .meeting-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+  .meeting-list span{
+    border:1px solid var(--rule);
+    padding: 4px 9px;
+    border-radius: 3px;
+    color: var(--muted);
+    background: var(--panel);
+  }
+
+  main{
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+
+  /* ===== Progress / score bar ===== */
+  #statusbar{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--paper);
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+    display:flex;
+    align-items:center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  #progress-track{
+    flex: 1 1 220px;
+    height: 6px;
+    background: var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    min-width: 140px;
+  }
+  #progress-fill{
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+  #statustext{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  #score-pill{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space:nowrap;
+  }
+
+  /* ===== Question cards ===== */
+  .qcard{
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 22px 24px 20px;
+    margin-bottom: 18px;
+  }
+  .qhead{
+    display:flex;
+    gap: 14px;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .qnum{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-2);
+    flex-shrink:0;
+    min-width: 30px;
+  }
+  .qsection{
+    font-family: var(--mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .qtext{
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap: 9px;
+    margin-top: 14px;
+  }
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    text-align:left;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 10px 14px;
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--ink);
+    cursor:pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .opt:hover:not(:disabled){
+    border-color: var(--accent);
+  }
+  .opt-letter{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    margin-top: 1px;
+  }
+  .opt:disabled{ cursor: default; }
+  .opt.correct{
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .opt.correct .opt-letter{ border-color: var(--correct); color: var(--correct); }
+  .opt.wrong{
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+    font-weight: 600;
+  }
+  .opt.wrong .opt-letter{ border-color: var(--wrong); color: var(--wrong); }
+  .opt.dim{ opacity: .5; }
+
+  .feedback{
+    margin-top: 12px;
+    font-size: 14px;
+    padding: 10px 13px;
+    border-radius: 5px;
+    display:none;
+    line-height:1.55;
+  }
+  .feedback.show{ display:block; }
+  .feedback.right{ background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong{ background: var(--wrong-bg); color: var(--wrong); }
+  .feedback b{ font-weight: 700; }
+
+  /* ===== Result panel ===== */
+  #result{
+    display:none;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 8px;
+    padding: 34px 30px;
+    text-align:center;
+    margin-top: 8px;
+  }
+  #result.show{ display:block; }
+  #result h2{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-family: var(--mono);
+    color: var(--accent-2);
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  #result .score-big{
+    font-size: 56px;
+    font-weight: 700;
+    margin: 6px 0;
+  }
+  #result .score-note{
+    color: #cfc9ba;
+    font-size: 14.5px;
+    max-width: 46ch;
+    margin: 0 auto 22px;
+  }
+  #result button{
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--paper);
+    color: var(--ink);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 4px;
+    cursor:pointer;
+  }
+
+  footer{
+    max-width: 920px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+
+  @media (max-width: 560px){
+    h1{ font-size: 28px; }
+    .qtext{ font-size: 15.5px; }
+    #statusbar{ gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="kicker">Kuis Latihan &middot; Struktur Diskrit</p>
+  <h1>Pertemuan 9–14</h1>
+  <p class="subtitle">30 soal pilihan ganda. Jawaban langsung diperiksa saat dipilih — benar berwarna hijau, salah berwarna merah beserta pembahasan singkat.</p>
+  <div class="meeting-list">
+    <span>P9 · Kanonik &amp; K-Map</span>
+    <span>P10 · Sorting &amp; Searching</span>
+    <span>P11 · Teori Graf</span>
+    <span>P12 · Representasi Graf</span>
+    <span>P13 · Pohon</span>
+    <span>P14 · Bahasa Formal &amp; FSA</span>
+  </div>
+</header>
+
+<main>
+  <div id="statusbar">
+    <div id="progress-track"><div id="progress-fill"></div></div>
+    <div id="statustext">0 / 30 dijawab</div>
+    <div id="score-pill">Skor: 0</div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div id="result">
+    <h2>Hasil Akhir</h2>
+    <div class="score-big" id="finalScore">0 / 30</div>
+    <p class="score-note" id="finalNote">Selesai! Cek kembali bagian yang salah untuk memperkuat pemahaman.</p>
+    <button id="retryBtn">Ulangi Kuis</button>
+  </div>
+</main>
+
+<footer>
+  Dibuat untuk latihan mandiri &middot; jawaban tersimpan sementara di sesi ini saja.
+</footer>
+
+<script>
+const QUESTIONS = [
+  // ===== Pertemuan 9: Bentuk Kanonik & Peta Karnaugh =====
+  {
+    section: "P9 · Kanonik & K-Map",
+    q: "Bentuk penjumlahan dari hasil kali (Sum of Product) disebut juga dengan istilah lain, yaitu...",
+    options: ["Maxterm", "Minterm", "Konjungsi", "Disjungsi total"],
+    correct: 1,
+    exp: "SOP (Sum of Product) juga dikenal sebagai Minterm, yaitu penjumlahan dari hasil kali."
+  },
+  {
+    section: "P9 · Kanonik & K-Map",
+    q: "POS (Product of Sum) adalah bentuk perkalian dari hasil jumlah. Nama lain dari POS adalah...",
+    options: ["Minterm", "Maxterm", "Kanonik SOP", "Literal"],
+    correct: 1,
+    exp: "POS (Product of Sum) juga disebut Maxterm."
+  },
+  {
+    section: "P9 · Kanonik & K-Map",
+    q: "Peta Karnaugh (K-Map) digunakan untuk tujuan apa dalam aljabar Boolean?",
+    options: [
+      "Mengonversi bilangan biner ke desimal",
+      "Menyederhanakan fungsi aljabar Boolean secara grafis",
+      "Menghitung kompleksitas waktu algoritma",
+      "Membuat diagram alir program"
+    ],
+    correct: 1,
+    exp: "K-Map adalah metode grafis untuk menyederhanakan fungsi aljabar Boolean."
+  },
+  {
+    section: "P9 · Kanonik & K-Map",
+    q: "Dalam representasi rangkaian saklar, gerbang logika AND setara dengan susunan saklar...",
+    options: ["Paralel", "Seri", "Campuran", "Terbuka"],
+    correct: 1,
+    exp: "Gerbang AND direpresentasikan sebagai saklar seri (harus kedua saklar tertutup agar arus mengalir)."
+  },
+  {
+    section: "P9 · Kanonik & K-Map",
+    q: "Gerbang OR pada representasi saklar setara dengan susunan saklar...",
+    options: ["Seri", "Paralel", "Silang", "Tertutup permanen"],
+    correct: 1,
+    exp: "Gerbang OR direpresentasikan sebagai saklar paralel (salah satu tertutup saja arus sudah mengalir)."
+  },
+
+  // ===== Pertemuan 10: Algoritma (Sorting & Searching) =====
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Secara umum, algoritma didefinisikan sebagai...",
+    options: [
+      "Bahasa pemrograman tingkat tinggi",
+      "Metode atau langkah terurut untuk memecahkan masalah",
+      "Struktur data berbentuk pohon",
+      "Notasi untuk menyatakan kompleksitas ruang"
+    ],
+    correct: 1,
+    exp: "Algoritma adalah metode atau langkah-langkah terurut untuk memecahkan suatu masalah."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Analisis untuk mengetahui lama waktu yang dibutuhkan suatu algoritma berjalan disebut...",
+    options: ["Space complexity", "Time complexity", "Recursion depth", "Big-Omega"],
+    correct: 1,
+    exp: "Time complexity adalah analisis lama waktu eksekusi suatu algoritma."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Notasi Big-O digunakan untuk...",
+    options: [
+      "Menyatakan hasil akhir program",
+      "Notasi asimptotik yang menjelaskan batas pertumbuhan fungsi",
+      "Menghitung jumlah simpul dalam graf",
+      "Menentukan urutan eksekusi thread"
+    ],
+    correct: 1,
+    exp: "Big-O adalah notasi asimptotik untuk menjelaskan batas pertumbuhan (kompleksitas) suatu fungsi/algoritma."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Perulangan di mana sebuah fungsi memanggil dirinya sendiri disebut...",
+    options: ["Iterasi", "Rekurensi", "Enkapsulasi", "Traversal"],
+    correct: 1,
+    exp: "Rekurensi adalah perulangan dengan cara memanggil dirinya sendiri, contohnya Fibonacci, Faktorial, dan Menara Hanoi."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Manakah berikut ini yang BUKAN contoh masalah rekursif klasik?",
+    options: ["Fibonacci", "Faktorial", "Menara Hanoi", "Binary Search berbasis iteratif murni"],
+    correct: 3,
+    exp: "Fibonacci, Faktorial, dan Menara Hanoi adalah contoh klasik rekursi. Binary Search versi iteratif murni tidak memanggil dirinya sendiri."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Algoritma pengurutan yang bekerja dengan cara membandingkan dan menukar data berdekatan yang salah urutan secara terus-menerus disebut...",
+    options: ["Selection Sort", "Insertion Sort", "Bubble Sort", "Binary Search"],
+    correct: 2,
+    exp: "Bubble Sort membandingkan & menukar data yang berdekatan secara terus-menerus hingga terurut."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Algoritma yang bekerja dengan mencari nilai ekstrem (terkecil/terbesar) kemudian menukarnya ke posisi ujung adalah...",
+    options: ["Bubble Sort", "Selection Sort", "Insertion Sort", "Sequential Search"],
+    correct: 1,
+    exp: "Selection Sort mencari nilai ekstrem lalu menukarnya ke posisi ujung yang sesuai."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Algoritma pengurutan yang analoginya seperti menyusun kartu di tangan, menyisipkan elemen satu per satu ke posisi yang tepat, adalah...",
+    options: ["Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort"],
+    correct: 2,
+    exp: "Insertion Sort menyisipkan elemen satu per satu ke posisi yang tepat, seperti menyusun kartu."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Metode pencarian yang mengecek elemen satu per satu dari awal sampai akhir data disebut...",
+    options: ["Binary Search", "Sequential Search", "Selection Search", "Hash Search"],
+    correct: 1,
+    exp: "Sequential Search mengecek data satu per satu dari awal hingga akhir."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Apa fungsi elemen fiktif (sentinel) pada Sequential Search + Sentinel?",
+    options: [
+      "Mempercepat pengurutan data",
+      "Sebagai pembatas fiktif di akhir data agar pencarian lebih efisien",
+      "Mengganti seluruh isi array",
+      "Menentukan jumlah simpul dalam graf"
+    ],
+    correct: 1,
+    exp: "Sentinel adalah elemen fiktif pembatas yang disisipkan di akhir data untuk menyederhanakan kondisi pengecekan pencarian berurutan."
+  },
+  {
+    section: "P10 · Sorting & Searching",
+    q: "Syarat utama agar algoritma Binary Search dapat digunakan adalah...",
+    options: [
+      "Data harus berjumlah genap",
+      "Data harus terurut",
+      "Data harus berupa bilangan bulat",
+      "Data harus disimpan dalam graf"
+    ],
+    correct: 1,
+    exp: "Binary Search mengharuskan data sudah terurut karena bekerja dengan membagi dua himpunan data secara terus-menerus."
+  },
+
+  // ===== Pertemuan 11: Teori Graf =====
+  {
+    section: "P11 · Teori Graf",
+    q: "Dalam permasalahan Jembatan Konigsberg, daratan direpresentasikan sebagai...",
+    options: ["Sisi (Edge)", "Simpul (Vertex)", "Loop", "Derajat"],
+    correct: 1,
+    exp: "Pada masalah Jembatan Konigsberg, daratan menjadi simpul (vertex) dan jembatan menjadi sisi (edge)."
+  },
+  {
+    section: "P11 · Teori Graf",
+    q: "Sisi yang berawal dan berakhir pada simpul yang sama disebut...",
+    options: ["Pendant vertex", "Loop (gelang)", "Simpul terpencil", "Sisi ganda"],
+    correct: 1,
+    exp: "Loop (gelang) adalah sisi yang berawal dan berakhir di simpul yang sama."
+  },
+  {
+    section: "P11 · Teori Graf",
+    q: "Simpul yang tidak memiliki tetangga sama sekali disebut...",
+    options: ["Pendant vertex", "Simpul terpencil", "Simpul gelang", "Simpul ganda"],
+    correct: 1,
+    exp: "Simpul terpencil adalah simpul yang tidak memiliki tetangga."
+  },
+  {
+    section: "P11 · Teori Graf",
+    q: "Simpul yang berderajat satu disebut juga dengan istilah...",
+    options: ["Simpul terpencil", "Pendant vertex (anting-anting)", "Loop", "Simpul ganda"],
+    correct: 1,
+    exp: "Pendant vertex (anting-anting) adalah simpul yang memiliki derajat satu."
+  },
+  {
+    section: "P11 · Teori Graf",
+    q: "Suatu graf disebut Graf Sederhana apabila...",
+    options: [
+      "Memiliki banyak sisi ganda",
+      "Tidak memiliki sisi ganda atau gelang (loop)",
+      "Hanya memiliki satu simpul",
+      "Semua simpulnya berderajat sama"
+    ],
+    correct: 1,
+    exp: "Graf Sederhana adalah graf yang tidak memiliki sisi ganda maupun gelang (loop)."
+  },
+  {
+    section: "P11 · Teori Graf",
+    q: "Menurut Lemma Jabat Tangan, jumlah total derajat semua simpul dalam suatu graf sama dengan...",
+    options: ["Jumlah simpul (n)", "Setengah dari jumlah sisi (E/2)", "Dua kali jumlah sisi (2E)", "Jumlah sisi dikurangi simpul"],
+    correct: 2,
+    exp: "Lemma Jabat Tangan menyatakan jumlah total derajat semua simpul adalah 2 kali jumlah sisi (2E)."
+  },
+
+  // ===== Pertemuan 12: Representasi Graf, Isomorfik & Planar =====
+  {
+    section: "P12 · Representasi Graf",
+    q: "Representasi graf dalam bentuk matriks biner (berisi angka 0 dan 1) disebut...",
+    options: ["Matriks Ketetanggaan", "Matriks Identitas", "Matriks Transpose", "Matriks Diagonal"],
+    correct: 0,
+    exp: "Matriks Ketetanggaan (adjacency matrix) merepresentasikan graf dalam bentuk matriks biner 0 dan 1."
+  },
+  {
+    section: "P12 · Representasi Graf",
+    q: "Dua graf dikatakan Isomorfik apabila...",
+    options: [
+      "Jumlah simpulnya berbeda tetapi jumlah sisinya sama",
+      "Memiliki struktur yang sama meskipun gambar/geometrinya berbeda",
+      "Salah satunya adalah graf planar",
+      "Keduanya memiliki loop"
+    ],
+    correct: 1,
+    exp: "Graf Isomorfik adalah dua graf dengan struktur yang sama walaupun geometri atau gambarnya berbeda."
+  },
+  {
+    section: "P12 · Representasi Graf",
+    q: "Suatu graf disebut Graf Planar apabila...",
+    options: [
+      "Semua sisinya saling berpotongan",
+      "Dapat digambar tanpa ada sisi yang saling berpotongan",
+      "Memiliki jumlah simpul genap",
+      "Hanya memiliki satu jalur Hamilton"
+    ],
+    correct: 1,
+    exp: "Graf Planar adalah graf yang dapat digambar tanpa ada sisi yang saling berpotongan."
+  },
+  {
+    section: "P12 · Representasi Graf",
+    q: "Rumus Euler untuk graf planar adalah f = e - n + 2. Apa arti dari variabel 'f' pada rumus tersebut?",
+    options: ["Jumlah sisi", "Jumlah simpul", "Jumlah bidang (face)", "Faktor derajat"],
+    correct: 2,
+    exp: "Pada rumus Euler f = e - n + 2, f menyatakan jumlah bidang (face), e jumlah sisi, dan n jumlah simpul."
+  },
+  {
+    section: "P12 · Representasi Graf",
+    q: "Lintasan yang melalui setiap SISI pada graf tepat satu kali disebut lintasan...",
+    options: ["Hamilton", "Euler", "Planar", "Isomorfik"],
+    correct: 1,
+    exp: "Lintasan Euler melalui setiap sisi tepat satu kali, berbeda dengan Hamilton yang berfokus pada simpul."
+  },
+  {
+    section: "P12 · Representasi Graf",
+    q: "Lintasan yang melalui setiap SIMPUL pada graf tepat satu kali disebut lintasan...",
+    options: ["Euler", "Hamilton", "Sirkuit ganda", "Planar"],
+    correct: 1,
+    exp: "Lintasan Hamilton melalui setiap simpul tepat satu kali."
+  },
+
+  // ===== Pertemuan 13: Pohon (Tree) =====
+  {
+    section: "P13 · Pohon (Tree)",
+    q: "Pohon (Tree) dalam teori graf didefinisikan sebagai...",
+    options: [
+      "Graf berarah yang memiliki sirkuit",
+      "Graf tak berarah terhubung yang tidak memiliki sirkuit",
+      "Graf dengan sisi ganda",
+      "Kumpulan graf yang tidak saling terhubung"
+    ],
+    correct: 1,
+    exp: "Pohon (Tree) adalah graf tak berarah yang terhubung dan tidak memiliki sirkuit."
+  },
+  {
+    section: "P13 · Pohon (Tree)",
+    q: "Kumpulan dari beberapa pohon yang saling lepas (tidak terhubung satu sama lain) disebut...",
+    options: ["Spanning Tree", "Hutan (Forest)", "Sirkuit", "Graf lengkap"],
+    correct: 1,
+    exp: "Hutan (Forest) adalah kumpulan pohon yang saling lepas."
+  },
+  {
+    section: "P13 · Pohon (Tree)",
+    q: "Jika sebuah pohon memiliki n simpul, maka jumlah sisinya pasti adalah...",
+    options: ["n", "n + 1", "n - 1", "2n"],
+    correct: 2,
+    exp: "Karakteristik khas pohon: dengan n simpul, pohon pasti memiliki tepat n - 1 sisi."
+  },
+  {
+    section: "P13 · Pohon (Tree)",
+    q: "Subgraf yang mencakup semua simpul dari graf asal tanpa membentuk sirkuit disebut...",
+    options: ["Hutan (Forest)", "Pohon Merentang (Spanning Tree)", "Graf Isomorfik", "Matriks Ketetanggaan"],
+    correct: 1,
+    exp: "Pohon Merentang (Spanning Tree) adalah subgraf yang mencakup semua simpul utama tanpa membentuk sirkuit."
+  },
+  {
+    section: "P13 · Pohon (Tree)",
+    q: "Dua algoritma yang umum digunakan untuk mencari Minimum Spanning Tree (MST) adalah...",
+    options: [
+      "Bubble Sort dan Selection Sort",
+      "Prim dan Kruskal",
+      "Binary Search dan Sequential Search",
+      "Euler dan Hamilton"
+    ],
+    correct: 1,
+    exp: "Algoritma Prim dan Kruskal adalah dua algoritma yang umum digunakan untuk mencari Minimum Spanning Tree (MST)."
+  },
+
+  // ===== Pertemuan 14: Bahasa Formal & FSA =====
+  {
+    section: "P14 · Bahasa Formal & FSA",
+    q: "Himpunan terbatas simbol yang digunakan dalam bahasa formal disebut...",
+    options: ["String", "Alfabet", "Produksi", "Terminal"],
+    correct: 1,
+    exp: "Alfabet adalah himpunan terbatas simbol dalam bahasa formal."
+  },
+  {
+    section: "P14 · Bahasa Formal & FSA",
+    q: "Himpunan karakter yang juga disebut sebagai kalimat atau kata dalam bahasa formal dikenal dengan istilah...",
+    options: ["Alfabet", "String", "Nonterminal", "Simbol Awal"],
+    correct: 1,
+    exp: "String adalah himpunan karakter, disebut juga kalimat atau kata."
+  },
+  {
+    section: "P14 · Bahasa Formal & FSA",
+    q: "Berikut ini yang merupakan 4 unsur tata bahasa (grammar) formal adalah...",
+    options: [
+      "Vertex, Edge, Loop, Degree",
+      "Terminal, Nonterminal, Produksi, Simbol Awal",
+      "Alfabet, String, FSA, State",
+      "Minterm, Maxterm, SOP, POS"
+    ],
+    correct: 1,
+    exp: "4 unsur tata bahasa formal adalah Terminal (T), Nonterminal (N), Produksi (P), dan Simbol Awal (S)."
+  },
+  {
+    section: "P14 · Bahasa Formal & FSA",
+    q: "FSA (Finite State Automata) adalah model matematika yang menggambarkan...",
+    options: [
+      "Sistem dengan input/output diskrit dan state tak terbatas",
+      "Sistem dengan input/output diskrit dan state terbatas",
+      "Struktur data berbentuk pohon",
+      "Algoritma pengurutan tercepat"
+    ],
+    correct: 1,
+    exp: "FSA adalah model matematika untuk sistem dengan input/output diskrit dan state (keadaan) yang terbatas jumlahnya."
+  },
+  {
+    section: "P14 · Bahasa Formal & FSA",
+    q: "Pada diagram FSA, simbol lingkaran ganda digunakan untuk melambangkan...",
+    options: ["Initial state (state awal)", "Final state (state akhir)", "Transisi tak valid", "Alfabet kosong"],
+    correct: 1,
+    exp: "Lingkaran ganda pada FSA melambangkan Final State, yaitu state akhir/penerimaan."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = new Array(QUESTIONS.length).fill(false);
+
+const quizEl = document.getElementById('quiz');
+const progressFill = document.getElementById('progress-fill');
+const statustext = document.getElementById('statustext');
+const scorePill = document.getElementById('score-pill');
+const resultEl = document.getElementById('result');
+
+function letter(i){ return String.fromCharCode(65 + i); }
+
+function render(){
+  quizEl.innerHTML = '';
+  QUESTIONS.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = 'q' + idx;
+
+    const head = document.createElement('div');
+    head.className = 'qhead';
+    head.innerHTML = `<span class="qnum">${String(idx+1).padStart(2,'0')}</span>
+      <div>
+        <div class="qsection">${item.section}</div>
+        <p class="qtext">${item.q}</p>
+      </div>`;
+    card.appendChild(head);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'options';
+
+    item.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = `<span class="opt-letter">${letter(oi)}</span><span>${opt}</span>`;
+      btn.addEventListener('click', () => selectAnswer(idx, oi, btn));
+      optsWrap.appendChild(btn);
+    });
+    card.appendChild(optsWrap);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = 'fb' + idx;
+    card.appendChild(fb);
+
+    quizEl.appendChild(card);
+  });
+  updateStatus();
+}
+
+function selectAnswer(qIdx, optIdx, btnEl){
+  if(answered[qIdx]) return;
+  answered[qIdx] = true;
+
+  const item = QUESTIONS[qIdx];
+  const card = document.getElementById('q' + qIdx);
+  const allBtns = card.querySelectorAll('.opt');
+
+  const isCorrect = optIdx === item.correct;
+  if(isCorrect) score++;
+
+  allBtns.forEach((b, i) => {
+    b.disabled = true;
+    if(i === item.correct){
+      b.classList.add('correct');
+    } else if(i === optIdx && !isCorrect){
+      b.classList.add('wrong');
+    } else {
+      b.classList.add('dim');
+    }
+  });
+
+  const fb = document.getElementById('fb' + qIdx);
+  fb.classList.add('show', isCorrect ? 'right' : 'wrong');
+  fb.innerHTML = isCorrect
+    ? `<b>Benar.</b> ${item.exp}`
+    : `<b>Kurang tepat.</b> Jawaban yang benar: <b>${letter(item.correct)}. ${item.options[item.correct]}</b>. ${item.exp}`;
+
+  updateStatus();
+
+  if(answered.every(a => a)){
+    showResult();
+  }
+}
+
+function updateStatus(){
+  const answeredCount = answered.filter(a => a).length;
+  const pct = (answeredCount / QUESTIONS.length) * 100;
+  progressFill.style.width = pct + '%';
+  statustext.textContent = `${answeredCount} / ${QUESTIONS.length} dijawab`;
+  scorePill.textContent = `Skor: ${score}`;
+}
+
+function showResult(){
+  resultEl.classList.add('show');
+  document.getElementById('finalScore').textContent = `${score} / ${QUESTIONS.length}`;
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  let note;
+  if(pct >= 90) note = "Luar biasa! Penguasaan materi Pertemuan 9–14 sangat kuat.";
+  else if(pct >= 70) note = "Bagus! Sebagian besar materi sudah dikuasai, cek kembali bagian yang salah.";
+  else if(pct >= 50) note = "Cukup baik. Ulangi materi pada bagian yang masih keliru.";
+  else note = "Perlu belajar lagi. Baca ulang rangkuman tiap pertemuan lalu coba lagi.";
+  document.getElementById('finalNote').textContent = `Skor kamu: ${pct}%. ${note}`;
+  resultEl.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  current = 0;
+  score = 0;
+  answered = new Array(QUESTIONS.length).fill(false);
+  resultEl.classList.remove('show');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+render();
+</script>
+
+</body>
+</html>

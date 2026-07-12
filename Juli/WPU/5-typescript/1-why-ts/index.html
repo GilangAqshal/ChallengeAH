@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TypeScript Tax Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tax Calculator</h1>
+      <div class="calculator">
+        <div class="input-group">
+          <label for="price">Price (Rp):</label>
+          <input
+            type="number"
+            id="price"
+            placeholder="Enter price"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="input-group">
+          <label for="taxRate">Tax Rate (%):</label>
+          <input
+            type="number"
+            id="taxRate"
+            placeholder="Enter tax rate"
+            min="0"
+            max="100"
+            step="0.1"
+            value="10"
+          />
+        </div>
+        <button id="calculate">Calculate</button>
+        <div class="results">
+          <div class="result-item">
+            <span>Price:</span>
+            <span id="priceOutput">Rp0.00</span>
+          </div>
+          <div class="result-item">
+            <span>Tax Amount:</span>
+            <span id="taxOutput">Rp0.00</span>
+          </div>
+          <div class="result-item total">
+            <span>Total:</span>
+            <span id="totalOutput">Rp0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
