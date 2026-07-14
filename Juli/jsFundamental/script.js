@@ -1,31 +1,31 @@
 // 8. contoh enkapsulasi data
-function counter() {
-  let angka = 0;
-  function tambahAngka() {
-    angka++;
-    return console.log(angka);
-  }
-  return tambahAngka;
-}
-
-angka = 100;
-
-let counterBaru = counter();
-counterBaru();
-counterBaru();
-counterBaru();
-
-// 7. contoh simple closure
-// function x() {
-//   let a = 10;
-//   function y() {
-//     console.log('hello world');
+// function counter() {
+//   let angka = 0;
+//   function tambahAngka() {
+//     angka++;
+//     return console.log(angka);
 //   }
-//   return y;
+//   return tambahAngka;
 // }
 
-// let z = x();
-// z();
+// angka = 100;
+
+// let counterBaru = counter();
+// counterBaru();
+// counterBaru();
+// counterBaru();
+
+// 7. contoh simple closure
+function x() {
+  let a = 10;
+  function y() {
+    console.log("hello world");
+  }
+  return y;
+}
+
+let z = x();
+z();
 
 // 6. contoh let & const
 // const x = 100;
