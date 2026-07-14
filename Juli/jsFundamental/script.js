@@ -28,9 +28,9 @@
 // z();
 
 // 6. contoh let & const
-const x = 100;
-x = 10;
-console.log(x);
+// const x = 100;
+// x = 10;
+// console.log(x);
 
 // 5. contoh let
 // halo();
@@ -42,15 +42,15 @@ console.log(x);
 // }
 
 // 4. contoh scope
-// function a() {
-//   var b = 10;
-//   c();
-//   function c() {
-//     console.log(b);
-//   }
-// }
+function a() {
+  var b = 10;
+  c();
+  function c() {
+    console.log(b);
+  }
+}
 
-// a();
+a();
 
 // 3. contoh execution context 3
 // function funcA(m, n) {
