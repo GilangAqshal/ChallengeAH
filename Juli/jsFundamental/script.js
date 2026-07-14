@@ -16,21 +16,21 @@
 // counterBaru();
 
 // 7. contoh simple closure
-function x() {
-  let a = 10;
-  function y() {
-    console.log("hello world");
-  }
-  return y;
-}
+// function x() {
+//   let a = 10;
+//   function y() {
+//     console.log("hello world");
+//   }
+//   return y;
+// }
 
-let z = x();
-z();
+// let z = x();
+// z();
 
 // 6. contoh let & const
-// const x = 100;
-// x = 10;
-// console.log(x);
+const x = 100;
+x = 10;
+console.log(x);
 
 // 5. contoh let
 // halo();
