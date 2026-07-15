@@ -42,32 +42,32 @@
 // }
 
 // 4. contoh scope
-function a() {
-  var b = 10;
-  c();
-  function c() {
-    console.log(b);
-  }
-}
+// function a() {
+//   var b = 10;
+//   c();
+//   function c() {
+//     console.log(b);
+//   }
+// }
 
-a();
+// a();
 
 // 3. contoh execution context 3
-// function funcA(m, n) {
-//   return m * n;
-// }
+function funcA(m, n) {
+  return m * n;
+}
 
-// function funcB(m, n) {
-//   return funcA(m, n);
-// }
+function funcB(m, n) {
+  return funcA(m, n);
+}
 
-// function getResult(num1, num2) {
-//   return funcB(num1, num2);
-// }
+function getResult(num1, num2) {
+  return funcB(num1, num2);
+}
 
-// var res = getResult(5, 6);
+var res = getResult(5, 6);
 
-// console.log(res);
+console.log(res);
 
 // 2. contoh execution context 2
 // var n = 3;
