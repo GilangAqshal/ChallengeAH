@@ -5,6 +5,5 @@
 // }
 
 const sapaUser = (nama) => `Halo, ${nama}!`;
-
 const gilang = "Gilang";
-sapaUser(gilang);
+console.log(sapaUser(gilang));
