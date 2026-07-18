@@ -31,6 +31,28 @@ const TombolLike = () => {
   );
 };
 //tantangan3
+
+const Suplemen = () => {
+  const etalase = [
+    { id: 1, name: "Whey Protein", qty: 2 },
+    { id: 2, name: "Gainer Protein", qty: 3 },
+    { id: 1, name: "Creatine", qty: 1 },
+  ];
+
+  return (
+    <div style={{ marginTop: "20px" }}>
+      <h2>Suplemen Yang dibeli:</h2>
+      <ul>
+        {etalase.map((pro) => (
+          <li key={pro.id} type="none">
+            Suplemen {pro.name} - Jumlah:{pro.qty}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const KeranjangBelanja = () => {
   const cart = [
     { id: 1, item: "Sepatu", qty: 2 },
@@ -57,6 +79,7 @@ const App = () => {
     <div>
       <Produk namaProduk="Creatine" harga="175.000" />
       <TombolLike />
+      <Suplemen />
       <KeranjangBelanja />
     </div>
   );
