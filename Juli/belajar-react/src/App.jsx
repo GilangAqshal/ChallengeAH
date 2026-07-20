@@ -1,5 +1,5 @@
 // Use state
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // tantangan 1
 const Produk = ({ namaProduk, harga }) => {
   return (
@@ -73,6 +73,40 @@ const KeranjangBelanja = () => {
   );
 };
 
+// tantangan 4
+const ProdukToko = () => {
+  const [listProduk, setListProduk] = useState([]);
+
+  useEffect(() => {
+    const ambilData = async () => {
+      const response = await fetch(
+        "https://api.escuelajs.co/api/v1/products?limit=3",
+      );
+      const data = await response.json();
+      setListProduk(data);
+    };
+    ambilData();
+  }, []); // Array kosong ini memastikan fetch hanya jalan 1 kali saat halaman dimuat
+
+  return (
+    <div style={{ marginTop: "20px" }}>
+      <h3>Produk Rekomendasi Hari Ini:</h3>
+
+      {listProduk.map((produk) => (
+        <div
+          key={produk.id}
+          style={{
+            border: "1px solid #ccc",
+            padding: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <h4>{produk.title}</h4>
+        </div>
+      ))}
+    </div>
+  );
+};
 // Parent COmponent
 const App = () => {
   return (
@@ -81,6 +115,7 @@ const App = () => {
       <TombolLike />
       <Suplemen />
       <KeranjangBelanja />
+      <ProdukToko />
     </div>
   );
 };
