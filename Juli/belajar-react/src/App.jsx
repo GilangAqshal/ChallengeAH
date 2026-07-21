@@ -116,6 +116,7 @@ const App = () => {
       <Suplemen />
       <KeranjangBelanja />
       <ProdukToko />
+      <ProdukToko />
     </div>
   );
 };
