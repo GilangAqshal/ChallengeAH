@@ -30,8 +30,20 @@ const TombolLike = () => {
     </div>
   );
 };
-//tantangan3
 
+// tantangan like ig
+const ButtonLIKED = () => {
+  const [isLike, setIsLike] = useState(false);
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <button onClick={() => setIsLike(!isLike)}>
+        {isLike ? "1 ❤️" : "0 🤍"}
+      </button>
+    </div>
+  );
+};
+
+//tantangan3
 const Suplemen = () => {
   const etalase = [
     { id: 1, name: "Whey Protein", qty: 2 },
@@ -113,6 +125,7 @@ const App = () => {
     <div>
       <Produk namaProduk="Creatine" harga="175.000" />
       <TombolLike />
+      <ButtonLIKED />
       <Suplemen />
       <KeranjangBelanja />
       <ProdukToko />
