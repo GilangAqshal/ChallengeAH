@@ -7,7 +7,7 @@ const Produk = ({ namaProduk, harga }) => {
       <h2>This is {namaProduk}!</h2>
       <p>
         Produk {namaProduk} sangat amat aman untuk pemula karena bagus untuk
-        membangun massa otott
+        membangun massa otot
       </p>
       <br />
       <h2>Bill {harga}!</h2>
