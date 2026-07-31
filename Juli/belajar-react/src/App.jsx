@@ -73,6 +73,19 @@ const KeranjangBelanja = () => {
   );
 };
 
+//
+const agz = () => {
+  const cast = [
+    { id: 1, name: "fattah" },
+    { id: 2, name: "mohan" },
+  ];
+
+  return (
+    <div>
+      <h3>agz cast : </h3>
+    </div>
+  );
+};
 // tantangan 4
 const ProdukToko = () => {
   const [listProduk, setListProduk] = useState([]);
