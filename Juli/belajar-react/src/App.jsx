@@ -18,18 +18,6 @@ const Produk = ({ namaProduk, harga }) => {
   );
 };
 // tantangan 2
-const TombolLike = () => {
-  const [isLiked, setIsLiked] = useState(false);
-
-  return (
-    <div style={{ marginTop: "10px" }}>
-      <button onClick={() => setIsLiked(!isLiked)}>
-        {/* Gunakan Ternary Operator untuk mengubah teks tombol secara dinamis */}
-        {isLiked ? "Sudah disukai ❤️" : "Sukai 🤍"}
-      </button>
-    </div>
-  );
-};
 
 // tantangan like ig
 const ButtonLIKED = () => {
@@ -124,7 +112,7 @@ const App = () => {
   return (
     <div>
       <Produk namaProduk="Creatine" harga="175.000" />
-      <TombolLike />
+
       <ButtonLIKED />
       <Suplemen />
       <KeranjangBelanja />
