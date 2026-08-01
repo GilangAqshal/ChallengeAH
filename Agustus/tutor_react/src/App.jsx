@@ -1,122 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const FormKomentar = () => {
+  // State 1: Menampung teks yang sedang diketik user di input
+  const [inputTeks, setInputTeks] = useState("");
+  
+  // State 2: Menampung list komentar yang sudah dikirim (berupa Array)
+  const [listKomentar, setListKomentar] = useState([]);
+
+  // Fungsi saat tombol/form disubmit
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Mencegah halaman reload otomatis
+    if (inputTeks.trim() === "") return; // Jangan masukkan jika input kosong
+
+    // 🧩 PUZZLE 1:
+    // Masukkan 'inputTeks' ke dalam array 'listKomentar'.
+    // Hint: Gunakan Spread Operator (...) untuk menggabungkan array lama dengan teks baru
+    // Contoh bentuknya: setListKomentar([...listKomentar, inputTeks]);
+    ...
+
+    // Reset isi input teks jadi kosong lagi setelah dikirim
+    setInputTeks("");
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+    <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
+      <h3>Beri Komentar / Opini:</h3>
+
+      <form onSubmit={handleSubmit}>
+        {/* 🧩 PUZZLE 2: 
+            Koneksikan input ini ke state 'inputTeks'.
+            1. Pasang 'value' mengarah ke 'inputTeks'
+            2. Pasang 'onChange' untuk update state saat ada yang diketik (e.target.value)
+        */}
+        <input
+          type="text"
+          placeholder="Tulis opini kamu di sini..."
+          value={...}
+          onChange={(e) => ...}
+          style={{ padding: "8px", width: "250px", marginRight: "10px" }}
+        />
+        <button type="submit" style={{ padding: "8px 15px" }}>
+          Kirim
         </button>
-      </section>
+      </form>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
-
-export default App
+      <h4 style={{ marginTop: "15px" }}>Daftar Komentar:</h4>
+      <ul>
+        {/* 🧩 PUZZLE 3: 
+            Looping array 'listKomentar' menggunakan .map() untuk menampilkan tiap komentar di tag <li>.
+            Gunakan 'index' sebagai key uniknya.
+        */}
+        {listKomentar.map((komentar, index) => (
+          <li key={...}>
+            {...}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
