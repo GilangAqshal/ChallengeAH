@@ -58,3 +58,12 @@ const FormKomentar = () => {
     </div>
   );
 };
+const App = () => {
+  return (
+    <div>
+      {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
+      <FormKomentar />
+    </div>
+  );
+};
+export default App;
