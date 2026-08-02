@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const FormKomentar = () => {
   // State 1: Menampung teks yang sedang diketik user di input
   const [inputTeks, setInputTeks] = useState("");
-  
+
   // State 2: Menampung list komentar yang sudah dikirim (berupa Array)
   const [listKomentar, setListKomentar] = useState([]);
 
@@ -16,14 +16,15 @@ const FormKomentar = () => {
     // Masukkan 'inputTeks' ke dalam array 'listKomentar'.
     // Hint: Gunakan Spread Operator (...) untuk menggabungkan array lama dengan teks baru
     // Contoh bentuknya: setListKomentar([...listKomentar, inputTeks]);
-    ...
-
+    setListKomentar([...listKomentar, inputTeks]);
     // Reset isi input teks jadi kosong lagi setelah dikirim
     setInputTeks("");
   };
 
   return (
-    <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
+    <div
+      style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}
+    >
       <h3>Beri Komentar / Opini:</h3>
 
       <form onSubmit={handleSubmit}>
@@ -35,8 +36,8 @@ const FormKomentar = () => {
         <input
           type="text"
           placeholder="Tulis opini kamu di sini..."
-          value={...}
-          onChange={(e) => ...}
+          value={inputTeks}
+          onChange={(e) => setInputTeks(e.target.value)}
           style={{ padding: "8px", width: "250px", marginRight: "10px" }}
         />
         <button type="submit" style={{ padding: "8px 15px" }}>
@@ -51,9 +52,7 @@ const FormKomentar = () => {
             Gunakan 'index' sebagai key uniknya.
         */}
         {listKomentar.map((komentar, index) => (
-          <li key={...}>
-            {...}
-          </li>
+          <li key={index}>{komentar}</li>
         ))}
       </ul>
     </div>
