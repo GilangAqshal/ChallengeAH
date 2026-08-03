@@ -58,11 +58,45 @@ const FormKomentar = () => {
     </div>
   );
 };
+
+const DaftarTugas = () => {
+  const [tugas, setTugas] = useState(["Belajar React", "Push ke GitHub"]);
+
+  // Fungsi untuk menghapus tugas berdasarkan indeks
+  const hapusTugas = (indexHapus) => {
+    // 🧩 PUZZLE 1: Filter array untuk membuang item dengan index yang dipilih
+    const tugasBaru = tugas.filter((_, index) => index !== indexHapus);
+    setTugas(tugasBaru);
+  };
+
+  return (
+    <div style={{ marginTop: "20px" }}>
+      <h3>Daftar Tugas Hari Ini:</h3>
+
+      {/* 🧩 PUZZLE 2: Tampilkan pesan jika tugas kosong (length === 0) */}
+      {tugas.length === 0 ? (
+        <p>Belum ada tugas, santai dulu! 🎉</p>
+      ) : (
+        <ul>
+          {tugas.map((item, index) => (
+            <li key={index} style={{ marginBottom: "5px" }}>
+              {item}{" "}
+              {/* 🧩 PUZZLE 3: Panggil fungsi hapusTugas saat tombol diklik */}
+              <button onClick={() => hapusTugas(index)}>Hapus ❌</button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <div>
       {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
       <FormKomentar />
+      <DaftarTugas />
     </div>
   );
 };
