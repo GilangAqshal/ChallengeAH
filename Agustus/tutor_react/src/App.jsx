@@ -59,6 +59,39 @@ const FormKomentar = () => {
   );
 };
 
+// challenge three
+const CariPemain = () => {
+  const [kataKunci, setKataKunci] = useState("");
+
+  const daftarPemain = [
+    "Bukayo Saka",
+    "Martin Odegaard",
+    "Declan Rice",
+    "Gabriel Martinelli",
+    "William Saliba",
+  ];
+
+  const pemainTersaring = daftarPemain.filter((nama) =>
+    nama.toLowerCase().includes(kataKunci.toLowerCase),
+  );
+
+  return (
+    <div
+      style={{ marginTop: "20px", padding: "15px", border: "1px solid #aaa" }}
+    >
+      <h3>Cari Skuad Pemain:</h3>
+
+      <input
+        type="text"
+        placeholder="Ketik nama pemain..."
+        value={kataKunci}
+        onChange={(e) => setKataKunci(e.target.value)}
+        style={{ padding: "8px", width: "200px" }}
+      />
+    </div>
+  );
+};
+
 const DaftarTugas = () => {
   const [tugas, setTugas] = useState(["Belajar React", "Push ke GitHub"]);
 
@@ -97,6 +130,7 @@ const App = () => {
       {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
       <FormKomentar />
       <DaftarTugas />
+      <CariPemain />
     </div>
   );
 };
