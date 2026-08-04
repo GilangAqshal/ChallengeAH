@@ -72,7 +72,7 @@ const CariPemain = () => {
   ];
 
   const pemainTersaring = daftarPemain.filter((nama) =>
-    nama.toLowerCase().includes(kataKunci.toLowerCase),
+    nama.toLowerCase().includes(kataKunci.toLowerCase()),
   );
 
   return (
@@ -88,6 +88,14 @@ const CariPemain = () => {
         onChange={(e) => setKataKunci(e.target.value)}
         style={{ padding: "8px", width: "200px" }}
       />
+
+      <ul style={{ marginTop: "15px" }}>
+        {pemainTersaring.map((pemain, index) => (
+          <li style={{ listStyle: "none" }} key={index}>
+            {pemain}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
@@ -112,7 +120,11 @@ const DaftarTugas = () => {
       ) : (
         <ul>
           {tugas.map((item, index) => (
-            <li key={index} style={{ marginBottom: "5px" }}>
+            <li
+              key={index}
+              style={{ marginBottom: "5px" }}
+              style={{ listStyle: "none" }}
+            >
               {item}{" "}
               {/* 🧩 PUZZLE 3: Panggil fungsi hapusTugas saat tombol diklik */}
               <button onClick={() => hapusTugas(index)}>Hapus ❌</button>
