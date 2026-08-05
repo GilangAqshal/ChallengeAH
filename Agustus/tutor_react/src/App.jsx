@@ -116,7 +116,7 @@ const DaftarTugas = () => {
 
       {/* 🧩 PUZZLE 2: Tampilkan pesan jika tugas kosong (length === 0) */}
       {tugas.length === 0 ? (
-        <p>Belum ada tugas, santai dulu! 🎉</p>
+        <p>Belum ada tugas, santai duluu! 🎉</p>
       ) : (
         <ul>
           {tugas.map((item, index) => (
