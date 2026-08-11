@@ -254,7 +254,9 @@ const App = () => {
       <FormKomentar />
       <DaftarTugas />
       <CariPemain />
+      <CariPemain />
     </div>
+      <CariPemain />
   );
 };
 export default App;
