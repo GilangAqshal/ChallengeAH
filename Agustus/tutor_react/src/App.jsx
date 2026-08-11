@@ -255,8 +255,8 @@ const App = () => {
       <DaftarTugas />
       <CariPemain />
       <CariPemain />
-    </div>
       <CariPemain />
+    </div>
   );
 };
 export default App;
