@@ -247,14 +247,139 @@ const CariPemain = () => {
   );
 };
 
+const JadwalArsenal = () => {
+  const [jadwal, setJadwal] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchJadwalArsenal = async () => {
+      try {
+        setLoading(true);
+        // ID 133604 adalah ID Tim Arsenal di TheSportsDB
+        const res = await fetch(
+          "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604"
+        );
+        
+        if (!res.ok) {
+          throw new Error("Gagal mengambil data jadwal.");
+        }
+
+        const data = await res.json();
+
+        // Menyimpan array pertandingan (events) ke state
+        if (data && data.events) {
+          setJadwal(data.events);
+        } else {
+          setJadwal([]);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJadwalArsenal();
+  }, []);
+
+  return (
+    <div
+      style={{
+        marginTop: "20px",
+        padding: "15px",
+        border: "1px solid #aaa",
+        borderRadius: "8px",
+        maxWidth: "600px",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <h3 style={{ color: "#EF0107", marginBottom: "15px" }}>
+        🔴 Jadwal Pertandingan Arsenal Berikutnya
+      </h3>
+
+      {loading && <p>Memuat jadwal pertandingan...</p>}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+
+      {!loading && !error && jadwal.length === 0 && (
+        <p>Tidak ada jadwal pertandingan mendatang yang ditemukan.</p>
+      )}
+
+      {!loading && !error && jadwal.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {jadwal.map((event) => (
+            <div
+              key={event.idEvent}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "6px",
+                padding: "12px",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              {/* Nama Kompetisi & Pekan */}
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "#666",
+                  marginBottom: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                {event.strLeague} {event.intRound ? `• Round ${event.intRound}` : ""}
+              </div>
+
+              {/* Laga / Matchup */}
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  marginBottom: "8px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span>{event.strHomeTeam}</span>
+                <span
+                  style={{
+                    backgroundColor: "#EF0107",
+                    color: "white",
+                    padding: "2px 8px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                  }}
+                >
+                  VS
+                </span>
+                <span>{event.strAwayTeam}</span>
+              </div>
+
+              {/* Tanggal, Jam & Stadion */}
+              <div style={{ fontSize: "13px", color: "#444" }}>
+                📅 {event.dateEvent} | ⏰ {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
+              </div>
+              {event.strVenue && (
+                <div style={{ fontSize: "12px", color: "#777", marginTop: "3px" }}>
+                  📍 {event.strVenue}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default JadwalArsenal;
+
 const App = () => {
   return (
     <div>
       {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
       <FormKomentar />
       <DaftarTugas />
-      <CariPemain />
-      <CariPemain />
       <CariPemain />
     </div>
   );
