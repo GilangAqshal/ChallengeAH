@@ -258,9 +258,9 @@ const JadwalArsenal = () => {
         setLoading(true);
         // ID 133604 adalah ID Tim Arsenal di TheSportsDB
         const res = await fetch(
-          "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604"
+          "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604",
         );
-        
+
         if (!res.ok) {
           throw new Error("Gagal mengambil data jadwal.");
         }
@@ -326,7 +326,8 @@ const JadwalArsenal = () => {
                   fontWeight: "bold",
                 }}
               >
-                {event.strLeague} {event.intRound ? `• Round ${event.intRound}` : ""}
+                {event.strLeague}{" "}
+                {event.intRound ? `• Round ${event.intRound}` : ""}
               </div>
 
               {/* Laga / Matchup */}
@@ -357,10 +358,13 @@ const JadwalArsenal = () => {
 
               {/* Tanggal, Jam & Stadion */}
               <div style={{ fontSize: "13px", color: "#444" }}>
-                📅 {event.dateEvent} | ⏰ {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
+                📅 {event.dateEvent} | ⏰{" "}
+                {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
               </div>
               {event.strVenue && (
-                <div style={{ fontSize: "12px", color: "#777", marginTop: "3px" }}>
+                <div
+                  style={{ fontSize: "12px", color: "#777", marginTop: "3px" }}
+                >
                   📍 {event.strVenue}
                 </div>
               )}
@@ -372,8 +376,6 @@ const JadwalArsenal = () => {
   );
 };
 
-export default JadwalArsenal;
-
 const App = () => {
   return (
     <div>
@@ -381,6 +383,7 @@ const App = () => {
       <FormKomentar />
       <DaftarTugas />
       <CariPemain />
+      <JadwalArsenal />
     </div>
   );
 };
