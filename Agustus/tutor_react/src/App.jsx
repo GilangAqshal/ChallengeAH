@@ -252,11 +252,13 @@ const JadwalArsenal = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // State untuk mengontrol apakah seluruh jadwal ditampilkan atau hanya 5
+  const [showAll, setShowAll] = useState(false);
+
   useEffect(() => {
     const fetchJadwalArsenal = async () => {
       try {
         setLoading(true);
-        // ID 133604 adalah ID Tim Arsenal di TheSportsDB
         const res = await fetch(
           "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604",
         );
@@ -267,7 +269,6 @@ const JadwalArsenal = () => {
 
         const data = await res.json();
 
-        // Menyimpan array pertandingan (events) ke state
         if (data && data.events) {
           setJadwal(data.events);
         } else {
@@ -282,6 +283,9 @@ const JadwalArsenal = () => {
 
     fetchJadwalArsenal();
   }, []);
+
+  // Filter jadwal: jika showAll true tampilkan semua, jika false potong 5 saja (.slice(0, 5))
+  const jadwalDitampilkan = showAll ? jadwal : jadwal.slice(0, 5);
 
   return (
     <div
@@ -306,71 +310,102 @@ const JadwalArsenal = () => {
       )}
 
       {!loading && !error && jadwal.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {jadwal.map((event) => (
-            <div
-              key={event.idEvent}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                padding: "12px",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              {/* Nama Kompetisi & Pekan */}
+        <>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            {jadwalDitampilkan.map((event) => (
               <div
+                key={event.idEvent}
                 style={{
-                  fontSize: "12px",
-                  color: "#666",
-                  marginBottom: "5px",
-                  fontWeight: "bold",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  padding: "12px",
+                  backgroundColor: "#f9f9f9",
                 }}
               >
-                {event.strLeague}{" "}
-                {event.intRound ? `• Round ${event.intRound}` : ""}
-              </div>
-
-              {/* Laga / Matchup */}
-              <div
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span>{event.strHomeTeam}</span>
-                <span
+                {/* Nama Kompetisi & Pekan */}
+                <div
                   style={{
-                    backgroundColor: "#EF0107",
-                    color: "white",
-                    padding: "2px 8px",
-                    borderRadius: "4px",
                     fontSize: "12px",
+                    color: "#666",
+                    marginBottom: "5px",
+                    fontWeight: "bold",
                   }}
                 >
-                  VS
-                </span>
-                <span>{event.strAwayTeam}</span>
-              </div>
-
-              {/* Tanggal, Jam & Stadion */}
-              <div style={{ fontSize: "13px", color: "#444" }}>
-                📅 {event.dateEvent} | ⏰{" "}
-                {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
-              </div>
-              {event.strVenue && (
-                <div
-                  style={{ fontSize: "12px", color: "#777", marginTop: "3px" }}
-                >
-                  📍 {event.strVenue}
+                  {event.strLeague}{" "}
+                  {event.intRound ? `• Round ${event.intRound}` : ""}
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+
+                {/* Laga / Matchup */}
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    marginBottom: "8px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span>{event.strHomeTeam}</span>
+                  <span
+                    style={{
+                      backgroundColor: "#EF0107",
+                      color: "white",
+                      padding: "2px 8px",
+                      borderRadius: "4px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    VS
+                  </span>
+                  <span>{event.strAwayTeam}</span>
+                </div>
+
+                {/* Tanggal, Jam & Stadion */}
+                <div style={{ fontSize: "13px", color: "#444" }}>
+                  📅 {event.dateEvent} | ⏰{" "}
+                  {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
+                </div>
+                {event.strVenue && (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#777",
+                      marginTop: "3px",
+                    }}
+                  >
+                    📍 {event.strVenue}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Tombol Toggle jika jumlah jadwal lebih dari 5 */}
+          {jadwal.length > 5 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              style={{
+                marginTop: "15px",
+                width: "100%",
+                padding: "10px",
+                backgroundColor: "#fff",
+                border: "1px solid #EF0107",
+                color: "#EF0107",
+                borderRadius: "6px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {showAll
+                ? "Sembunyikan (Tampilkan 5 Pertandingan)"
+                : `Tampilkan Semua (${jadwal.length} Pertandingan)`}
+            </button>
+          )}
+        </>
       )}
     </div>
   );
@@ -382,8 +417,8 @@ const App = () => {
       {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
       <FormKomentar />
       <DaftarTugas />
-      <CariPemain />
       <JadwalArsenal />
+      <CariPemain />
     </div>
   );
 };
