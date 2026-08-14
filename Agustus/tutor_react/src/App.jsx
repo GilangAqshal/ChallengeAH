@@ -390,8 +390,8 @@ const JadwalArsenal = () => {
   return (
     <div
       style={{
-        marginTop: "20px",
-        padding: "15px",
+        marginTop: "30px",
+        padding: "35px",
         border: "1px solid #aaa",
         borderRadius: "8px",
         maxWidth: "600px",
