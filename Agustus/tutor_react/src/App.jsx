@@ -398,7 +398,7 @@ const JadwalArsenal = () => {
         fontFamily: "sans-serif",
       }}
     >
-      <h3 style={{ color: "#ef0109ea", marginBottom: "15px" }}>
+      <h3 style={{ color: "#ef0109", marginBottom: "15px" }}>
         🔴 Jadwal Pertandingan Arsenal
       </h3>
 
