@@ -390,15 +390,15 @@ const JadwalArsenal = () => {
   return (
     <div
       style={{
-        marginTop: "30px",
-        padding: "35px",
+        marginTop: "20px",
+        padding: "15px",
         border: "1px solid #aaa",
         borderRadius: "8px",
         maxWidth: "600px",
         fontFamily: "sans-serif",
       }}
     >
-      <h3 style={{ color: "#EF0107", marginBottom: "15px" }}>
+      <h3 style={{ color: "#ef0109ea", marginBottom: "15px" }}>
         🔴 Jadwal Pertandingan Arsenal
       </h3>
 
