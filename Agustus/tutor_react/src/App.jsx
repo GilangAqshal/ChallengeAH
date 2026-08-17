@@ -399,7 +399,8 @@ const JadwalArsenal = () => {
       }}
     >
       <h3 style={{ color: "#ef0109", marginBottom: "15px" }}>
-        🔴 Jadwal Pertandingan Arsenal All
+        {/* 🔴  */}
+        Jadwal Pertandingan Arsenal
       </h3>
 
       {loading && <p>Memuat jadwal pertandingan...</p>}
