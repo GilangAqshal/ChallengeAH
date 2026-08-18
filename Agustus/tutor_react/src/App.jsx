@@ -1,91 +1,334 @@
 import React, { useState, useEffect } from "react";
 
-const FormKomentar = () => {
-  // State 1: Menampung teks yang sedang diketik user di input
-  const [inputTeks, setInputTeks] = useState("");
+// ==========================================
+// DATA PEMAIN ARSENAL (SESUAI GAMBAR)
+// ==========================================
+const dataPemainArsenal = [
+  // --- GOALKEEPERS ---
+  {
+    nomor: 1,
+    nama: "DAVID RAYA",
+    negara: "Spain",
+    posisi: "Goalkeepers",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/93bsoi1723805370.png",
+  },
+  {
+    nomor: 13,
+    nama: "KEPA ARIZZABALAGA",
+    negara: "Spain",
+    posisi: "Goalkeepers",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/0y9nii1696423985.png",
+  },
+  {
+    nomor: 30,
+    nama: "ILLAN MESLIER",
+    negara: "France",
+    posisi: "Goalkeepers",
+    foto: "https://via.placeholder.com/150?text=Meslier",
+  },
+  {
+    nomor: 35,
+    nama: "TOMMY SETFORD",
+    negara: "England",
+    posisi: "Goalkeepers",
+    foto: "https://via.placeholder.com/150?text=Setford",
+  },
 
-  // State 2: Menampung list komentar yang sudah dikirim (berupa Array)
+  // --- DEFENDERS ---
+  {
+    nomor: 2,
+    nama: "WILLIAM SALIBA",
+    negara: "France",
+    posisi: "Defenders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/qerwve1681283319.png",
+  },
+  {
+    nomor: 3,
+    nama: "CRISTHIAN MOSQUERA",
+    negara: "Spain",
+    posisi: "Defenders",
+    foto: "https://via.placeholder.com/150?text=Mosquera",
+  },
+  {
+    nomor: 4,
+    nama: "BEN WHITE",
+    negara: "England",
+    posisi: "Defenders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/2q1m421681283389.png",
+  },
+  {
+    nomor: 5,
+    nama: "PIERO HINCAPIE",
+    negara: "Ecuador",
+    posisi: "Defenders",
+    foto: "https://via.placeholder.com/150?text=Hincapie",
+  },
+  {
+    nomor: 6,
+    nama: "GABRIEL",
+    negara: "Brazil",
+    posisi: "Defenders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/42w3rt1681283296.png",
+  },
+  {
+    nomor: 12,
+    nama: "JURRIEN TIMBER",
+    negara: "Netherlands",
+    posisi: "Defenders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/o38h0y1689363025.png",
+  },
+  {
+    nomor: 33,
+    nama: "RICCARDO CALAFIORI",
+    negara: "Italy",
+    posisi: "Defenders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/1xutsc1722339591.png",
+  },
+  {
+    nomor: 49,
+    nama: "MYLES LEWIS-SKELLY",
+    negara: "England",
+    posisi: "Defenders",
+    foto: "https://via.placeholder.com/150?text=Lewis-Skelly",
+  },
+
+  // --- MIDFIELDERS ---
+  {
+    nomor: 8,
+    nama: "MARTIN ODEGAARD",
+    negara: "Norway",
+    posisi: "Midfielders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/t3f79z1681283248.png",
+  },
+  {
+    nomor: 10,
+    nama: "EBERECHI EZE",
+    negara: "England",
+    posisi: "Midfielders",
+    foto: "https://via.placeholder.com/150?text=Eze",
+  },
+  {
+    nomor: 21,
+    nama: "FABIO VIEIRA",
+    negara: "Portugal",
+    posisi: "Midfielders",
+    foto: "https://via.placeholder.com/150?text=Vieira",
+  },
+  {
+    nomor: 22,
+    nama: "ETHAN NWANERI",
+    negara: "England",
+    posisi: "Midfielders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/s5y39f1681283461.png",
+  },
+  {
+    nomor: 23,
+    nama: "MIKEL MERINO",
+    negara: "Spain",
+    posisi: "Midfielders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/syrz0j1724803738.png",
+  },
+  {
+    nomor: 36,
+    nama: "MARTIN ZUBIMENDI",
+    negara: "Spain",
+    posisi: "Midfielders",
+    foto: "https://via.placeholder.com/150?text=Zubimendi",
+  },
+  {
+    nomor: 39,
+    nama: "BRUNO GUIMARAES",
+    negara: "Brazil",
+    posisi: "Midfielders",
+    foto: "https://via.placeholder.com/150?text=Guimaraes",
+  },
+  {
+    nomor: 41,
+    nama: "DECLAN RICE",
+    negara: "England",
+    posisi: "Midfielders",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/mftx701689362953.png",
+  },
+
+  // --- FORWARDS ---
+  {
+    nomor: 7,
+    nama: "BUKAYO SAKA",
+    negara: "England",
+    posisi: "Forwards",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/0b68a81681283226.png",
+  },
+  {
+    nomor: 9,
+    nama: "GABRIEL JESUS",
+    negara: "Brazil",
+    posisi: "Forwards",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/h0675i1681283183.png",
+  },
+  {
+    nomor: 11,
+    nama: "GABRIEL MARTINELLI",
+    negara: "Brazil",
+    posisi: "Forwards",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/nshm5n1681283204.png",
+  },
+  {
+    nomor: 14,
+    nama: "VIKTOR GYÖKERES",
+    negara: "Sweden",
+    posisi: "Forwards",
+    foto: "https://via.placeholder.com/150?text=Gyokeres",
+  },
+  {
+    nomor: 17,
+    nama: "CHRISTOS TZOLIS",
+    negara: "Greece",
+    posisi: "Forwards",
+    foto: "https://via.placeholder.com/150?text=Tzolis",
+  },
+  {
+    nomor: 20,
+    nama: "NONI MADUEKE",
+    negara: "England",
+    posisi: "Forwards",
+    foto: "https://via.placeholder.com/150?text=Madueke",
+  },
+  {
+    nomor: 24,
+    nama: "REISS NELSON",
+    negara: "England",
+    posisi: "Forwards",
+    foto: "https://via.placeholder.com/150?text=Nelson",
+  },
+  {
+    nomor: 29,
+    nama: "KAI HAVERTZ",
+    negara: "Germany",
+    posisi: "Forwards",
+    foto: "https://www.thesportsdb.com/images/media/player/cutout/b02mve1689362879.png",
+  },
+];
+
+// ==========================================
+// KOMPONEN 1: FORM KOMENTAR
+// ==========================================
+const FormKomentar = () => {
+  const [inputTeks, setInputTeks] = useState("");
   const [listKomentar, setListKomentar] = useState([]);
 
-  // Fungsi saat tombol/form disubmit
   const handleSubmit = (e) => {
-    e.preventDefault(); // Mencegah halaman reload otomatis
-    if (inputTeks.trim() === "") return; // Jangan masukkan jika input kosong
-
-    // 🧩 PUZZLE 1:
-    // Masukkan 'inputTeks' ke dalam array 'listKomentar'.
-    // Hint: Gunakan Spread Operator (...) untuk menggabungkan array lama dengan teks baru
-    // Contoh bentuknya: setListKomentar([...listKomentar, inputTeks]);
+    e.preventDefault();
+    if (inputTeks.trim() === "") return;
     setListKomentar([...listKomentar, inputTeks]);
-    // Reset isi input teks jadi kosong lagi setelah dikirim
     setInputTeks("");
   };
 
   return (
     <div
-      style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}
+      style={{
+        padding: "20px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#fff",
+        marginBottom: "20px",
+      }}
     >
-      <h3>Beri Komentar / Opini:</h3>
-
-      <form onSubmit={handleSubmit}>
-        {/* 🧩 PUZZLE 2: 
-            Koneksikan input ini ke state 'inputTeks'.
-            1. Pasang 'value' mengarah ke 'inputTeks'
-            2. Pasang 'onChange' untuk update state saat ada yang diketik (e.target.value)
-        */}
+      <h3 style={{ marginTop: 0 }}>💬 Beri Komentar / Opini:</h3>
+      <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
         <input
           type="text"
           placeholder="Tulis opini kamu di sini..."
           value={inputTeks}
           onChange={(e) => setInputTeks(e.target.value)}
-          style={{ padding: "8px", width: "250px", marginRight: "10px" }}
+          style={{
+            padding: "10px",
+            flex: "1",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+          }}
         />
-        <button type="submit" style={{ padding: "8px 15px" }}>
+        <button
+          type="submit"
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#EF0107",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
           Kirim
         </button>
       </form>
-
-      <h4 style={{ marginTop: "15px" }}>Daftar Komentar:</h4>
-      <ul>
-        🧩 PUZZLE 3: 
-            Looping array 'listKomentar' menggunakan .map() untuk menampilkan tiap komentar di tag <li>.
-            Gunakan 'index' sebagai key uniknya.
-       
-        {listKomentar.map((komentar, index) => (
-          <li key={index}>{komentar}</li>
-        ))}
-      </ul>
+      {listKomentar.length > 0 && (
+        <div style={{ marginTop: "15px" }}>
+          <h4>Daftar Komentar:</h4>
+          <ul style={{ paddingLeft: "20px" }}>
+            {listKomentar.map((komentar, index) => (
+              <li key={index} style={{ marginBottom: "5px" }}>
+                {komentar}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
-const DaftarTugas = () => {
-  const [tugas, setTugas] = useState(["Belajar React", "Push ke GitHub"]);
 
-  // Fungsi untuk menghapus tugas berdasarkan indeks
+// ==========================================
+// KOMPONEN 2: DAFTAR TUGAS
+// ==========================================
+const DaftarTugas = () => {
+  const [tugas, setTugas] = useState(["Belajar React", "Cek Jadwal Arsenal"]);
+
   const hapusTugas = (indexHapus) => {
-    // 🧩 PUZZLE 1: Filter array untuk membuang item dengan index yang dipilih
     const tugasBaru = tugas.filter((_, index) => index !== indexHapus);
     setTugas(tugasBaru);
   };
 
   return (
-    <div style={{ marginTop: "20px" }}>
-      <h3>Daftar Tugas Hari Ini:</h3>
-
-      {/* 🧩 PUZZLE 2: Tampilkan pesan jika tugas kosong (length === 0) */}
+    <div
+      style={{
+        padding: "20px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#fff",
+        marginBottom: "20px",
+      }}
+    >
+      <h3 style={{ marginTop: 0 }}>📝 Daftar Tugas Hari Ini:</h3>
       {tugas.length === 0 ? (
-        <p>Belum ada tugas, santai duluu! 🎉</p>
+        <p>Belum ada tugas! 🎉</p>
       ) : (
-        <ul>
+        <ul style={{ padding: 0, listStyle: "none" }}>
           {tugas.map((item, index) => (
             <li
               key={index}
-              style={{ marginBottom: "5px" }}
-              style={{ listStyle: "none" }}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "8px 12px",
+                borderBottom: "1px solid #eee",
+              }}
             >
-              {item}{" "}
-              {/* 🧩 PUZZLE 3: Panggil fungsi hapusTugas saat tombol diklik */}
-              <button onClick={() => hapusTugas(index)}>Hapus ❌</button>
+              <span>{item}</span>
+              <button
+                onClick={() => hapusTugas(index)}
+                style={{
+                  backgroundColor: "#ff4d4d",
+                  color: "white",
+                  border: "none",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Hapus ❌
+              </button>
             </li>
           ))}
         </ul>
@@ -94,159 +337,159 @@ const DaftarTugas = () => {
   );
 };
 
-// challenge three
-const daftarPemain = [
-  // Kiper (Goalkeepers)
-  "David Raya",
-  "Kepa Arrizabalaga",
-  "Illan Meslier",
-  "Tommy Setford",
-  // Bek (Defenders)
-  "William Saliba",
-  "Cristhian Mosquera",
-  "Ben White",
-  "Piero Hincapie",
-  "Gabriel Magalhaes",
-  "Jurrien Timber",
-  "Riccardo Calafiori",
-  // Gelandang (Midfielders)
-  "Eberechi Eze",
-  "Mikel Merino",
-  "Ethan Nwaneri",
-  "Declan Rice",
-  "Martin Zubimendi",
-  "Fabio Vieira",
-  "Christian Norgaard",
-  "Myles Lewis-Skelly",
-  // Penyerang (Forwards)
-  "Viktor Gyokeres",
-  "Bukayo Saka",
-  "Martin Odegaard",
-  "Gabriel Jesus",
-  "Gabriel Martinelli",
-  "Christos Tzolis",
-  "Noni Madueke",
-  "Reiss Nelson",
-  "Kai Havertz",
-];
-
-const CariPemain = () => {
+// ==========================================
+// KOMPONEN 3: SKUAD PEMAIN ARSENAL (TAMPILAN CARD)
+// ==========================================
+const SkuadPemain = () => {
   const [kataKunci, setKataKunci] = useState("");
-  const [dataPemain, setDataPemain] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const kategoriPosisi = [
+    "Goalkeepers",
+    "Defenders",
+    "Midfielders",
+    "Forwards",
+  ];
 
-  // Filter list berdasarkan pencarian teks
-  const pemainTersaring = daftarPemain.filter((nama) =>
-    nama.toLowerCase().includes(kataKunci.toLowerCase()),
+  const pemainTersaring = dataPemainArsenal.filter(
+    (p) =>
+      p.nama.toLowerCase().includes(kataKunci.toLowerCase()) ||
+      p.negara.toLowerCase().includes(kataKunci.toLowerCase()),
   );
 
-  // Fetch data & gambar dari API saat input/list berubah
-  useEffect(() => {
-    const fetchGambarPemain = async () => {
-      if (pemainTersaring.length === 0) {
-        setDataPemain([]);
-        return;
-      }
-
-      setLoading(true);
-
-      // Ambil data dari API TheSportsDB untuk setiap pemain yang tersaring
-      const hasilFetch = await Promise.all(
-        pemainTersaring.map(async (nama) => {
-          try {
-            const res = await fetch(
-              `https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=${encodeURIComponent(
-                nama,
-              )}`,
-            );
-            const data = await res.json();
-            const playerInfo = data.player ? data.player[0] : null;
-
-            return {
-              nama: nama,
-              foto:
-                playerInfo?.strCutout ||
-                playerInfo?.strThumb ||
-                "https://via.placeholder.com/80?text=No+Image",
-            };
-          } catch (error) {
-            return {
-              nama: nama,
-              foto: "https://via.placeholder.com/80?text=Error",
-            };
-          }
-        }),
-      );
-
-      setDataPemain(hasilFetch);
-      setLoading(false);
-    };
-
-    // Debounce singkat agar tidak spam fetch tiap ketik 1 huruf
-    const timer = setTimeout(() => {
-      fetchGambarPemain();
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [kataKunci]);
-
   return (
-    <div
-      style={{ marginTop: "20px", padding: "15px", border: "1px solid #aaa" }}
-    >
-      <h3>Cari Skuad Pemain:</h3>
+    <div style={{ marginBottom: "30px" }}>
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h2 style={{ color: "#EF0107", marginBottom: "10px" }}>
+          🔴 ARSENAL SQUAD
+        </h2>
+        <input
+          type="text"
+          placeholder="Cari nama pemain atau negara..."
+          value={kataKunci}
+          onChange={(e) => setKataKunci(e.target.value)}
+          style={{
+            padding: "10px",
+            width: "100%",
+            maxWidth: "350px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+          }}
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Ketik nama pemain..."
-        value={kataKunci}
-        onChange={(e) => setKataKunci(e.target.value)}
-        style={{ padding: "8px", width: "220px", marginBottom: "15px" }}
-      />
+      {kategoriPosisi.map((posisi) => {
+        const pemainKategori = pemainTersaring.filter(
+          (p) => p.posisi === posisi,
+        );
+        if (pemainKategori.length === 0) return null;
 
-      {loading ? (
-        <p>Memuat foto pemain...</p>
-      ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
-          {dataPemain.map((item, index) => (
-            <div
-              key={index}
+        return (
+          <div key={posisi} style={{ marginBottom: "35px" }}>
+            <h3
               style={{
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                padding: "10px",
                 textAlign: "center",
-                width: "120px",
+                letterSpacing: "2px",
+                borderBottom: "1px solid #ccc",
+                paddingBottom: "8px",
+                textTransform: "uppercase",
               }}
             >
-              <img
-                src={item.foto}
-                alt={item.nama}
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginTop: "8px",
-                }}
-              >
-                {item.nama}
-              </p>
+              {posisi} ⌃
+            </h3>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+                justifyContent: "center",
+              }}
+            >
+              {pemainKategori.map((pemain) => (
+                <div
+                  key={pemain.nomor}
+                  style={{
+                    width: "260px",
+                    height: "140px",
+                    borderRadius: "12px",
+                    background:
+                      "linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)",
+                    border: "1px solid #dcdcdc",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.05)",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "15px",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        color: "#111",
+                        lineHeight: "1",
+                      }}
+                    >
+                      {pemain.nomor}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        color: "#222",
+                        marginTop: "6px",
+                        maxWidth: "130px",
+                        textTransform: "uppercase",
+                        lineHeight: "1.2",
+                      }}
+                    >
+                      {pemain.nama}
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#555",
+                      fontWeight: "600",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                    }}
+                  >
+                    📍 {pemain.negara}
+                  </div>
+
+                  <img
+                    src={pemain.foto}
+                    alt={pemain.nama}
+                    style={{
+                      position: "absolute",
+                      right: "-10px",
+                      bottom: "0",
+                      height: "130px",
+                      objectFit: "contain",
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                    }}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        );
+      })}
     </div>
   );
 };
 
+// ==========================================
+// KOMPONEN 4: JADWAL ARSENAL
+// ==========================================
 const mockJadwalArsenal = [
   {
     idEvent: "1",
@@ -278,83 +521,11 @@ const mockJadwalArsenal = [
     strTime: "11:30:00",
     strVenue: "Emirates Stadium",
   },
-  {
-    idEvent: "4",
-    strLeague: "Premier League",
-    intRound: "4",
-    strHomeTeam: "Tottenham",
-    strAwayTeam: "Arsenal",
-    dateEvent: "2024-09-15",
-    strTime: "13:00:00",
-    strVenue: "Tottenham Hotspur Stadium",
-  },
-  {
-    idEvent: "5",
-    strLeague: "Premier League",
-    intRound: "5",
-    strHomeTeam: "Manchester City",
-    strAwayTeam: "Arsenal",
-    dateEvent: "2024-09-22",
-    strTime: "15:30:00",
-    strVenue: "Etihad Stadium",
-  },
-  {
-    idEvent: "6",
-    strLeague: "Premier League",
-    intRound: "6",
-    strHomeTeam: "Arsenal",
-    strAwayTeam: "Leicester City",
-    dateEvent: "2024-09-28",
-    strTime: "14:00:00",
-    strVenue: "Emirates Stadium",
-  },
-  {
-    idEvent: "7",
-    strLeague: "Premier League",
-    intRound: "7",
-    strHomeTeam: "Arsenal",
-    strAwayTeam: "Southampton",
-    dateEvent: "2024-10-05",
-    strTime: "14:00:00",
-    strVenue: "Emirates Stadium",
-  },
-  {
-    idEvent: "8",
-    strLeague: "Premier League",
-    intRound: "8",
-    strHomeTeam: "Bournemouth",
-    strAwayTeam: "Arsenal",
-    dateEvent: "2024-10-19",
-    strTime: "16:30:00",
-    strVenue: "Vitality Stadium",
-  },
-  {
-    idEvent: "9",
-    strLeague: "Premier League",
-    intRound: "9",
-    strHomeTeam: "Arsenal",
-    strAwayTeam: "Liverpool",
-    dateEvent: "2024-10-27",
-    strTime: "16:30:00",
-    strVenue: "Emirates Stadium",
-  },
-  {
-    idEvent: "10",
-    strLeague: "Premier League",
-    intRound: "10",
-    strHomeTeam: "Newcastle United",
-    strAwayTeam: "Arsenal",
-    dateEvent: "2024-11-02",
-    strTime: "12:30:00",
-    strVenue: "St. James' Park",
-  },
 ];
 
 const JadwalArsenal = () => {
   const [jadwal, setJadwal] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchJadwalArsenal = async () => {
@@ -363,18 +534,13 @@ const JadwalArsenal = () => {
         const res = await fetch(
           "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604",
         );
-
         const data = await res.json();
-
         if (data && data.events && data.events.length > 0) {
-          // Gabungkan data asli API di posisi paling atas + sisanya dari mock data
-          const mergedData = [...data.events, ...mockJadwalArsenal];
-          setJadwal(mergedData);
+          setJadwal(data.events);
         } else {
           setJadwal(mockJadwalArsenal);
         }
       } catch (err) {
-        // Jika API error/gagal, tetap pakai mock data
         setJadwal(mockJadwalArsenal);
       } finally {
         setLoading(false);
@@ -384,137 +550,79 @@ const JadwalArsenal = () => {
     fetchJadwalArsenal();
   }, []);
 
-  // Potong 5 data pertama jika showAll bernilai false
-  const jadwalDitampilkan = showAll ? jadwal : jadwal.slice(0, 5);
-
   return (
     <div
       style={{
-        marginTop: "20px",
-        padding: "15px",
-        border: "1px solid #aaa",
-        borderRadius: "8px",
-        maxWidth: "600px",
-        fontFamily: "sans-serif",
+        padding: "20px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#fff",
       }}
     >
-      <h3 style={{ color: "#ef0109", marginBottom: "15px" }}>
-        {/* 🔴  */}
-        Jadwal Pertandingan Arsenal
+      <h3 style={{ color: "#EF0107", marginTop: 0 }}>
+        📅 Jadwal Pertandingan Arsenal
       </h3>
-
-      {loading && <p>Memuat jadwal pertandingan...</p>}
-
-      {!loading && (
-        <>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-          >
-            {jadwalDitampilkan.map((event, index) => (
-              <div
-                key={event.idEvent || index}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "6px",
-                  padding: "12px",
-                  backgroundColor: "#f9f9f9",
-                }}
-              >
-                {/* Nama Kompetisi & Pekan */}
-                <div
-                  style={{
-                    fontSize: "12px",
-                    color: "#666",
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {event.strLeague}{" "}
-                  {event.intRound ? `• Round ${event.intRound}` : ""}
-                </div>
-
-                {/* Matchup */}
-                <div
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    marginBottom: "8px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <span>{event.strHomeTeam}</span>
-                  <span
-                    style={{
-                      backgroundColor: "#EF0107",
-                      color: "white",
-                      padding: "2px 8px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    VS
-                  </span>
-                  <span>{event.strAwayTeam}</span>
-                </div>
-
-                {/* Tanggal & Waktu */}
-                <div style={{ fontSize: "13px", color: "#444" }}>
-                  📅 {event.dateEvent} | ⏰{" "}
-                  {event.strTime ? event.strTime.substring(0, 5) : "TBD"} UTC
-                </div>
-                {event.strVenue && (
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#777",
-                      marginTop: "3px",
-                    }}
-                  >
-                    📍 {event.strVenue}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Tombol Toggle pasti dirender karena total data > 5 */}
-          {jadwal.length > 5 && (
-            <button
-              onClick={() => setShowAll(!showAll)}
+      {loading ? (
+        <p>Memuat jadwal...</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {jadwal.slice(0, 3).map((event, index) => (
+            <div
+              key={event.idEvent || index}
               style={{
-                marginTop: "15px",
-                width: "100%",
-                padding: "10px",
-                backgroundColor: "#fff",
-                border: "1px solid #EF0107",
-                color: "#EF0107",
+                border: "1px solid #eee",
                 borderRadius: "6px",
-                fontWeight: "bold",
-                cursor: "pointer",
+                padding: "10px",
+                backgroundColor: "#f9f9f9",
               }}
             >
-              {showAll
-                ? "Sembunyikan (Tampilkan 5 Pertandingan)"
-                : `Tampilkan Semua (${jadwal.length} Pertandingan)`}
-            </button>
-          )}
-        </>
+              <div
+                style={{ fontSize: "12px", color: "#666", fontWeight: "bold" }}
+              >
+                {event.strLeague}{" "}
+                {event.intRound ? `• Round ${event.intRound}` : ""}
+              </div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontWeight: "bold",
+                  margin: "5px 0",
+                }}
+              >
+                {event.strHomeTeam} vs {event.strAwayTeam}
+              </div>
+              <div style={{ fontSize: "12px", color: "#444" }}>
+                📅 {event.dateEvent} | 📍 {event.strVenue || "Emirates Stadium"}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 };
 
+// ==========================================
+// KOMPONEN UTAMA (APP)
+// ==========================================
 const App = () => {
   return (
-    <div>
-      {/* <Produk namaProduk="Creatine" harga="175.000" /> */}
+    <div
+      style={{
+        maxWidth: "1000px",
+        margin: "0 auto",
+        padding: "20px",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        backgroundColor: "#f4f6f9",
+        minHeight: "100vh",
+      }}
+    >
       <FormKomentar />
       <DaftarTugas />
-      <CariPemain />
+      <SkuadPemain />
       <JadwalArsenal />
     </div>
   );
 };
+
 export default App;
