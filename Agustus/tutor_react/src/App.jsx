@@ -47,10 +47,10 @@ const FormKomentar = () => {
 
       <h4 style={{ marginTop: "15px" }}>Daftar Komentar:</h4>
       <ul>
-        {/* 🧩 PUZZLE 3: 
+        🧩 PUZZLE 3: 
             Looping array 'listKomentar' menggunakan .map() untuk menampilkan tiap komentar di tag <li>.
             Gunakan 'index' sebagai key uniknya.
-        */}
+       
         {listKomentar.map((komentar, index) => (
           <li key={index}>{komentar}</li>
         ))}
