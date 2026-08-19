@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 // ==========================================
-// DATA PEMAIN ARSENAL (SESUAI GAMBAR)
+// DATA PEMAIN ARSENAL
+// Taruh file foto pemain Anda di folder `public/players/`
+// Contoh nama file: `1_david_raya.png`, `2_saliba.png`, dst.
+// Atau tinggal ganti nilai properti `foto` di bawah dengan URL/path foto Anda.
 // ==========================================
 const dataPemainArsenal = [
   // --- GOALKEEPERS ---
@@ -10,28 +13,28 @@ const dataPemainArsenal = [
     nama: "DAVID RAYA",
     negara: "Spain",
     posisi: "Goalkeepers",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/93bsoi1723805370.png",
+    foto: "/players/david_raya.png",
   },
   {
     nomor: 13,
     nama: "KEPA ARIZZABALAGA",
     negara: "Spain",
     posisi: "Goalkeepers",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/0y9nii1696423985.png",
+    foto: "/players/kepa.png",
   },
   {
     nomor: 30,
     nama: "ILLAN MESLIER",
     negara: "France",
     posisi: "Goalkeepers",
-    foto: "https://via.placeholder.com/150?text=Meslier",
+    foto: "/players/meslier.png",
   },
   {
     nomor: 35,
     nama: "TOMMY SETFORD",
     negara: "England",
     posisi: "Goalkeepers",
-    foto: "https://via.placeholder.com/150?text=Setford",
+    foto: "/players/setford.png",
   },
 
   // --- DEFENDERS ---
@@ -40,56 +43,56 @@ const dataPemainArsenal = [
     nama: "WILLIAM SALIBA",
     negara: "France",
     posisi: "Defenders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/qerwve1681283319.png",
+    foto: "/players/saliba.png",
   },
   {
     nomor: 3,
     nama: "CRISTHIAN MOSQUERA",
     negara: "Spain",
     posisi: "Defenders",
-    foto: "https://via.placeholder.com/150?text=Mosquera",
+    foto: "/players/mosquera.png",
   },
   {
     nomor: 4,
     nama: "BEN WHITE",
     negara: "England",
     posisi: "Defenders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/2q1m421681283389.png",
+    foto: "/players/ben_white.png",
   },
   {
     nomor: 5,
     nama: "PIERO HINCAPIE",
     negara: "Ecuador",
     posisi: "Defenders",
-    foto: "https://via.placeholder.com/150?text=Hincapie",
+    foto: "/players/hincapie.png",
   },
   {
     nomor: 6,
     nama: "GABRIEL",
     negara: "Brazil",
     posisi: "Defenders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/42w3rt1681283296.png",
+    foto: "/players/gabriel.png",
   },
   {
     nomor: 12,
     nama: "JURRIEN TIMBER",
     negara: "Netherlands",
     posisi: "Defenders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/o38h0y1689363025.png",
+    foto: "/players/timber.png",
   },
   {
     nomor: 33,
     nama: "RICCARDO CALAFIORI",
     negara: "Italy",
     posisi: "Defenders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/1xutsc1722339591.png",
+    foto: "/players/calafiori.png",
   },
   {
     nomor: 49,
     nama: "MYLES LEWIS-SKELLY",
     negara: "England",
     posisi: "Defenders",
-    foto: "https://via.placeholder.com/150?text=Lewis-Skelly",
+    foto: "/players/lewis_skelly.png",
   },
 
   // --- MIDFIELDERS ---
@@ -98,56 +101,56 @@ const dataPemainArsenal = [
     nama: "MARTIN ODEGAARD",
     negara: "Norway",
     posisi: "Midfielders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/t3f79z1681283248.png",
+    foto: "/players/odegaard.png",
   },
   {
     nomor: 10,
     nama: "EBERECHI EZE",
     negara: "England",
     posisi: "Midfielders",
-    foto: "https://via.placeholder.com/150?text=Eze",
+    foto: "/players/eze.png",
   },
   {
     nomor: 21,
     nama: "FABIO VIEIRA",
     negara: "Portugal",
     posisi: "Midfielders",
-    foto: "https://via.placeholder.com/150?text=Vieira",
+    foto: "/players/vieira.png",
   },
   {
     nomor: 22,
     nama: "ETHAN NWANERI",
     negara: "England",
     posisi: "Midfielders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/s5y39f1681283461.png",
+    foto: "/players/nwaneri.png",
   },
   {
     nomor: 23,
     nama: "MIKEL MERINO",
     negara: "Spain",
     posisi: "Midfielders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/syrz0j1724803738.png",
+    foto: "/players/merino.png",
   },
   {
     nomor: 36,
     nama: "MARTIN ZUBIMENDI",
     negara: "Spain",
     posisi: "Midfielders",
-    foto: "https://via.placeholder.com/150?text=Zubimendi",
+    foto: "/players/zubimendi.png",
   },
   {
     nomor: 39,
     nama: "BRUNO GUIMARAES",
     negara: "Brazil",
     posisi: "Midfielders",
-    foto: "https://via.placeholder.com/150?text=Guimaraes",
+    foto: "/players/guimaraes.png",
   },
   {
     nomor: 41,
     nama: "DECLAN RICE",
     negara: "England",
     posisi: "Midfielders",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/mftx701689362953.png",
+    foto: "/players/rice.png",
   },
 
   // --- FORWARDS ---
@@ -156,56 +159,56 @@ const dataPemainArsenal = [
     nama: "BUKAYO SAKA",
     negara: "England",
     posisi: "Forwards",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/0b68a81681283226.png",
+    foto: "/players/saka.png",
   },
   {
     nomor: 9,
     nama: "GABRIEL JESUS",
     negara: "Brazil",
     posisi: "Forwards",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/h0675i1681283183.png",
+    foto: "/players/jesus.png",
   },
   {
     nomor: 11,
     nama: "GABRIEL MARTINELLI",
     negara: "Brazil",
     posisi: "Forwards",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/nshm5n1681283204.png",
+    foto: "/players/martinelli.png",
   },
   {
     nomor: 14,
     nama: "VIKTOR GYÖKERES",
     negara: "Sweden",
     posisi: "Forwards",
-    foto: "https://via.placeholder.com/150?text=Gyokeres",
+    foto: "/players/gyokeres.png",
   },
   {
     nomor: 17,
     nama: "CHRISTOS TZOLIS",
     negara: "Greece",
     posisi: "Forwards",
-    foto: "https://via.placeholder.com/150?text=Tzolis",
+    foto: "/players/tzolis.png",
   },
   {
     nomor: 20,
     nama: "NONI MADUEKE",
     negara: "England",
     posisi: "Forwards",
-    foto: "https://via.placeholder.com/150?text=Madueke",
+    foto: "/players/madueke.png",
   },
   {
     nomor: 24,
     nama: "REISS NELSON",
     negara: "England",
     posisi: "Forwards",
-    foto: "https://via.placeholder.com/150?text=Nelson",
+    foto: "/players/nelson.png",
   },
   {
     nomor: 29,
     nama: "KAI HAVERTZ",
     negara: "Germany",
     posisi: "Forwards",
-    foto: "https://www.thesportsdb.com/images/media/player/cutout/b02mve1689362879.png",
+    foto: "/players/havertz.png",
   },
 ];
 
@@ -282,7 +285,7 @@ const FormKomentar = () => {
 // KOMPONEN 2: DAFTAR TUGAS
 // ==========================================
 const DaftarTugas = () => {
-  const [tugas, setTugas] = useState(["Belajar React", "Cek Jadwal Arsenal"]);
+  const [tugas, setTugas] = useState(["Belajar React", "Upload Foto Pemain"]);
 
   const hapusTugas = (indexHapus) => {
     const tugasBaru = tugas.filter((_, index) => index !== indexHapus);
@@ -338,7 +341,7 @@ const DaftarTugas = () => {
 };
 
 // ==========================================
-// KOMPONEN 3: SKUAD PEMAIN ARSENAL (TAMPILAN CARD)
+// KOMPONEN 3: SKUAD PEMAIN ARSENAL
 // ==========================================
 const SkuadPemain = () => {
   const [kataKunci, setKataKunci] = useState("");
@@ -463,18 +466,24 @@ const SkuadPemain = () => {
                     📍 {pemain.negara}
                   </div>
 
+                  {/* ========================================================= */}
+                  {/* TAG IMG PEMAIN (Nanti tinggal isi atribut src di objek data) */}
+                  {/* ========================================================= */}
                   <img
                     src={pemain.foto}
                     alt={pemain.nama}
                     style={{
                       position: "absolute",
-                      right: "-10px",
-                      bottom: "0",
+                      right: "0px",
+                      bottom: "0px",
                       height: "130px",
+                      width: "auto",
                       objectFit: "contain",
+                      zIndex: 1,
                     }}
+                    /* Jika foto belum dimasukkan/error, akan menampilkan area kosong transparan */
                     onError={(e) => {
-                      e.target.style.display = "none";
+                      e.target.style.opacity = "0.2"; // Menyamarkan saat foto belum tersedia
                     }}
                   />
                 </div>
