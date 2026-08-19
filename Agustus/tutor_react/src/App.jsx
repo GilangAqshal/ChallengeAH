@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 
 // ==========================================
+// HELPER BACA GAMBAR DARI FOLDER ASSETS
+// Folder: src/assets/player/
+// ==========================================
+const getPlayerImage = (fileName) => {
+  try {
+    return new URL(`./assets/player/${fileName}`, import.meta.url).href;
+  } catch (err) {
+    return "";
+  }
+};
+
+// ==========================================
 // DATA PEMAIN ARSENAL
-// Taruh file foto pemain Anda di folder `public/players/`
-// Contoh nama file: `1_david_raya.png`, `2_saliba.png`, dst.
-// Atau tinggal ganti nilai properti `foto` di bawah dengan URL/path foto Anda.
 // ==========================================
 const dataPemainArsenal = [
   // --- GOALKEEPERS ---
@@ -13,28 +22,28 @@ const dataPemainArsenal = [
     nama: "DAVID RAYA",
     negara: "Spain",
     posisi: "Goalkeepers",
-    foto: "/players/david_raya.png",
+    foto: getPlayerImage("david_raya.png"),
   },
   {
     nomor: 13,
     nama: "KEPA ARIZZABALAGA",
     negara: "Spain",
     posisi: "Goalkeepers",
-    foto: "/players/kepa.png",
+    foto: getPlayerImage("kepa.png"),
   },
   {
     nomor: 30,
     nama: "ILLAN MESLIER",
     negara: "France",
     posisi: "Goalkeepers",
-    foto: "/players/meslier.png",
+    foto: getPlayerImage("meslier.png"),
   },
   {
     nomor: 35,
     nama: "TOMMY SETFORD",
     negara: "England",
     posisi: "Goalkeepers",
-    foto: "/players/setford.png",
+    foto: getPlayerImage("setford.png"),
   },
 
   // --- DEFENDERS ---
@@ -43,56 +52,56 @@ const dataPemainArsenal = [
     nama: "WILLIAM SALIBA",
     negara: "France",
     posisi: "Defenders",
-    foto: "/players/saliba.png",
+    foto: getPlayerImage("saliba.png"),
   },
   {
     nomor: 3,
     nama: "CRISTHIAN MOSQUERA",
     negara: "Spain",
     posisi: "Defenders",
-    foto: "/players/mosquera.png",
+    foto: getPlayerImage("mosquera.png"),
   },
   {
     nomor: 4,
     nama: "BEN WHITE",
     negara: "England",
     posisi: "Defenders",
-    foto: "/players/ben_white.png",
+    foto: getPlayerImage("ben_white.png"),
   },
   {
     nomor: 5,
     nama: "PIERO HINCAPIE",
     negara: "Ecuador",
     posisi: "Defenders",
-    foto: "/players/hincapie.png",
+    foto: getPlayerImage("hincapie.png"),
   },
   {
     nomor: 6,
     nama: "GABRIEL",
     negara: "Brazil",
     posisi: "Defenders",
-    foto: "/players/gabriel.png",
+    foto: getPlayerImage("gabriel.png"),
   },
   {
     nomor: 12,
     nama: "JURRIEN TIMBER",
     negara: "Netherlands",
     posisi: "Defenders",
-    foto: "/players/timber.png",
+    foto: getPlayerImage("timber.png"),
   },
   {
     nomor: 33,
     nama: "RICCARDO CALAFIORI",
     negara: "Italy",
     posisi: "Defenders",
-    foto: "/players/calafiori.png",
+    foto: getPlayerImage("calafiori.png"),
   },
   {
     nomor: 49,
     nama: "MYLES LEWIS-SKELLY",
     negara: "England",
     posisi: "Defenders",
-    foto: "/players/lewis_skelly.png",
+    foto: getPlayerImage("lewis_skelly.png"),
   },
 
   // --- MIDFIELDERS ---
@@ -101,56 +110,56 @@ const dataPemainArsenal = [
     nama: "MARTIN ODEGAARD",
     negara: "Norway",
     posisi: "Midfielders",
-    foto: "/players/odegaard.png",
+    foto: getPlayerImage("odegaard.png"),
   },
   {
     nomor: 10,
     nama: "EBERECHI EZE",
     negara: "England",
     posisi: "Midfielders",
-    foto: "/players/eze.png",
+    foto: getPlayerImage("eze.png"),
   },
   {
     nomor: 21,
     nama: "FABIO VIEIRA",
     negara: "Portugal",
     posisi: "Midfielders",
-    foto: "/players/vieira.png",
+    foto: getPlayerImage("vieira.png"),
   },
   {
     nomor: 22,
     nama: "ETHAN NWANERI",
     negara: "England",
     posisi: "Midfielders",
-    foto: "/players/nwaneri.png",
+    foto: getPlayerImage("nwaneri.png"),
   },
   {
     nomor: 23,
     nama: "MIKEL MERINO",
     negara: "Spain",
     posisi: "Midfielders",
-    foto: "/players/merino.png",
+    foto: getPlayerImage("merino.png"),
   },
   {
     nomor: 36,
     nama: "MARTIN ZUBIMENDI",
     negara: "Spain",
     posisi: "Midfielders",
-    foto: "/players/zubimendi.png",
+    foto: getPlayerImage("zubimendi.png"),
   },
   {
     nomor: 39,
     nama: "BRUNO GUIMARAES",
     negara: "Brazil",
     posisi: "Midfielders",
-    foto: "/players/guimaraes.png",
+    foto: getPlayerImage("guimaraes.png"),
   },
   {
     nomor: 41,
     nama: "DECLAN RICE",
     negara: "England",
     posisi: "Midfielders",
-    foto: "/players/rice.png",
+    foto: getPlayerImage("rice.png"),
   },
 
   // --- FORWARDS ---
@@ -159,56 +168,56 @@ const dataPemainArsenal = [
     nama: "BUKAYO SAKA",
     negara: "England",
     posisi: "Forwards",
-    foto: "/players/saka.png",
+    foto: getPlayerImage("saka.png"),
   },
   {
     nomor: 9,
     nama: "GABRIEL JESUS",
     negara: "Brazil",
     posisi: "Forwards",
-    foto: "/players/jesus.png",
+    foto: getPlayerImage("jesus.png"),
   },
   {
     nomor: 11,
     nama: "GABRIEL MARTINELLI",
     negara: "Brazil",
     posisi: "Forwards",
-    foto: "/players/martinelli.png",
+    foto: getPlayerImage("martinelli.png"),
   },
   {
     nomor: 14,
     nama: "VIKTOR GYÖKERES",
     negara: "Sweden",
     posisi: "Forwards",
-    foto: "/players/gyokeres.png",
+    foto: getPlayerImage("gyokeres.png"),
   },
   {
     nomor: 17,
     nama: "CHRISTOS TZOLIS",
     negara: "Greece",
     posisi: "Forwards",
-    foto: "/players/tzolis.png",
+    foto: getPlayerImage("tzolis.png"),
   },
   {
     nomor: 20,
     nama: "NONI MADUEKE",
     negara: "England",
     posisi: "Forwards",
-    foto: "/players/madueke.png",
+    foto: getPlayerImage("madueke.png"),
   },
   {
     nomor: 24,
     nama: "REISS NELSON",
     negara: "England",
     posisi: "Forwards",
-    foto: "/players/nelson.png",
+    foto: getPlayerImage("nelson.png"),
   },
   {
     nomor: 29,
     nama: "KAI HAVERTZ",
     negara: "Germany",
     posisi: "Forwards",
-    foto: "/players/havertz.png",
+    foto: getPlayerImage("havertz.png"),
   },
 ];
 
@@ -341,6 +350,100 @@ const DaftarTugas = () => {
 };
 
 // ==========================================
+// KOMPONEN CARD PEMAIN (EFEK HOVER TERANG)
+// ==========================================
+const PlayerCard = ({ pemain }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        width: "260px",
+        height: "140px",
+        borderRadius: "12px",
+        background: isHovered
+          ? "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)"
+          : "linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)",
+        border: isHovered ? "1px solid #EF0107" : "1px solid #dcdcdc",
+        boxShadow: isHovered
+          ? "0 10px 20px rgba(239, 1, 7, 0.15)"
+          : "0 4px 8px rgba(0, 0, 0, 0.05)",
+        position: "relative",
+        overflow: "hidden",
+        padding: "15px",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+        transition: "all 0.3s ease",
+        cursor: "pointer",
+      }}
+    >
+      <div>
+        <div
+          style={{
+            fontSize: "22px",
+            fontWeight: "800",
+            color: "#111",
+            lineHeight: "1",
+          }}
+        >
+          {pemain.nomor}
+        </div>
+        <div
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#222",
+            marginTop: "6px",
+            maxWidth: "130px",
+            textTransform: "uppercase",
+            lineHeight: "1.2",
+          }}
+        >
+          {pemain.nama}
+        </div>
+      </div>
+
+      <div
+        style={{
+          fontSize: "12px",
+          color: "#555",
+          fontWeight: "600",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+        }}
+      >
+        📍 {pemain.negara}
+      </div>
+
+      {/* GAMBAR PEMAIN: PUDAR SAAT NORMAL (0.35), TERANG + POP UP SAAT HOVER (1) */}
+      <img
+        src={pemain.foto}
+        alt={pemain.nama}
+        style={{
+          position: "absolute",
+          right: "0px",
+          bottom: "0px",
+          height: "130px",
+          width: "auto",
+          objectFit: "contain",
+          zIndex: 1,
+          opacity: isHovered ? 1 : 0.35,
+          transform: isHovered ? "scale(1.08)" : "scale(1)",
+          filter: isHovered ? "brightness(100%)" : "brightness(90%)",
+          transition: "all 0.3s ease",
+        }}
+      />
+    </div>
+  );
+};
+
+// ==========================================
 // KOMPONEN 3: SKUAD PEMAIN ARSENAL
 // ==========================================
 const SkuadPemain = () => {
@@ -408,85 +511,7 @@ const SkuadPemain = () => {
               }}
             >
               {pemainKategori.map((pemain) => (
-                <div
-                  key={pemain.nomor}
-                  style={{
-                    width: "260px",
-                    height: "140px",
-                    borderRadius: "12px",
-                    background:
-                      "linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)",
-                    border: "1px solid #dcdcdc",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.05)",
-                    position: "relative",
-                    overflow: "hidden",
-                    padding: "15px",
-                    boxSizing: "border-box",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>
-                    <div
-                      style={{
-                        fontSize: "22px",
-                        fontWeight: "800",
-                        color: "#111",
-                        lineHeight: "1",
-                      }}
-                    >
-                      {pemain.nomor}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        color: "#222",
-                        marginTop: "6px",
-                        maxWidth: "130px",
-                        textTransform: "uppercase",
-                        lineHeight: "1.2",
-                      }}
-                    >
-                      {pemain.nama}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#555",
-                      fontWeight: "600",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    📍 {pemain.negara}
-                  </div>
-
-                  {/* ========================================================= */}
-                  {/* TAG IMG PEMAIN (Nanti tinggal isi atribut src di objek data) */}
-                  {/* ========================================================= */}
-                  <img
-                    src={pemain.foto}
-                    alt={pemain.nama}
-                    style={{
-                      position: "absolute",
-                      right: "0px",
-                      bottom: "0px",
-                      height: "130px",
-                      width: "auto",
-                      objectFit: "contain",
-                      zIndex: 1,
-                    }}
-                    /* Jika foto belum dimasukkan/error, akan menampilkan area kosong transparan */
-                    onError={(e) => {
-                      e.target.style.opacity = "0.2"; // Menyamarkan saat foto belum tersedia
-                    }}
-                  />
-                </div>
+                <PlayerCard key={pemain.nomor} pemain={pemain} />
               ))}
             </div>
           </div>
