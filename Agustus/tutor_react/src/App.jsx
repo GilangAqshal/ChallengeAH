@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // ==========================================
-// HELPER BACA GAMBAR DARI FOLDER ASSETS
-// Folder: src/assets/player/
+// HELPER BACA GAMBAR PEMAIN DARI ASSETS
 // ==========================================
 const getPlayerImage = (fileName) => {
   try {
@@ -10,6 +9,29 @@ const getPlayerImage = (fileName) => {
   } catch (err) {
     return "";
   }
+};
+
+// ==========================================
+// HELPER BENDERA NEGARA (FLAGCDN)
+// ==========================================
+const getFlagUrl = (countryCode) => {
+  return `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
+};
+
+// Map Kode Negara ISO (2 Karakter)
+const countryCodeMap = {
+  Spain: "es",
+  France: "fr",
+  England: "gb-eng",
+  Ecuador: "ec",
+  Brazil: "br",
+  Netherlands: "nl",
+  Italy: "it",
+  Norway: "no",
+  Portugal: "pt",
+  Sweden: "se",
+  Greece: "gr",
+  Germany: "de",
 };
 
 // ==========================================
@@ -90,18 +112,18 @@ const dataPemainArsenal = [
     foto: getPlayerImage("timber.png"),
   },
   {
-    nomor: 12,
-    nama: "JURRIEN TIMBER",
-    negara: "Netherlands",
-    posisi: "Defenders",
-    foto: getPlayerImage("timber.png"),
-  },
-  {
     nomor: 15,
     nama: "EZRI KONSA",
     negara: "England",
     posisi: "Defenders",
     foto: getPlayerImage("konsa.png"),
+  },
+  {
+    nomor: 33,
+    nama: "RICCARDO CALAFIORI",
+    negara: "Italy",
+    posisi: "Defenders",
+    foto: getPlayerImage("calafiori.png"),
   },
   {
     nomor: 49,
@@ -357,10 +379,11 @@ const DaftarTugas = () => {
 };
 
 // ==========================================
-// KOMPONEN CARD PEMAIN (EFEK HOVER TERANG)
+// KOMPONEN CARD PEMAIN (BENDERA ASLI + EFEK HOVER)
 // ==========================================
 const PlayerCard = ({ pemain }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const countryCode = countryCodeMap[pemain.negara] || "gb";
 
   return (
     <div
@@ -415,20 +438,32 @@ const PlayerCard = ({ pemain }) => {
         </div>
       </div>
 
+      {/* TAMPILAN BENDERA ASLI BESERTA NAMA NEGARA */}
       <div
         style={{
           fontSize: "12px",
-          color: "#555",
+          color: "#444",
           fontWeight: "600",
           display: "flex",
           alignItems: "center",
-          gap: "5px",
+          gap: "6px",
         }}
       >
-        📍 {pemain.negara}
+        <img
+          src={getFlagUrl(countryCode)}
+          alt={pemain.negara}
+          style={{
+            width: "18px",
+            height: "13px",
+            borderRadius: "2px",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+            objectFit: "cover",
+          }}
+        />
+        <span>{pemain.negara}</span>
       </div>
 
-      {/* GAMBAR PEMAIN: PUDAR SAAT NORMAL (0.35), TERANG + POP UP SAAT HOVER (1) */}
+      {/* GAMBAR PEMAIN */}
       <img
         src={pemain.foto}
         alt={pemain.nama}
