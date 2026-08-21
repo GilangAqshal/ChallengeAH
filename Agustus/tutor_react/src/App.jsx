@@ -90,11 +90,18 @@ const dataPemainArsenal = [
     foto: getPlayerImage("timber.png"),
   },
   {
-    nomor: 33,
-    nama: "RICCARDO CALAFIORI",
-    negara: "Italy",
+    nomor: 12,
+    nama: "JURRIEN TIMBER",
+    negara: "Netherlands",
     posisi: "Defenders",
-    foto: getPlayerImage("calafiori.png"),
+    foto: getPlayerImage("timber.png"),
+  },
+  {
+    nomor: 15,
+    nama: "EZRI KONSA",
+    negara: "England",
+    posisi: "Defenders",
+    foto: getPlayerImage("konsa.png"),
   },
   {
     nomor: 49,
