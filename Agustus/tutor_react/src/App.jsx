@@ -116,7 +116,7 @@ const dataPemainArsenal = [
     nama: "EZRI KONSA",
     negara: "England",
     posisi: "Defenders",
-    foto: getPlayerImage("konsa.png"),
+    foto: getPlayerImage("konsa.jpg"),
   },
   {
     nomor: 33,
