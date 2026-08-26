@@ -128,7 +128,7 @@ const dataPemainArsenal = [
     nomor: 49,
     nama: "MYLES LEWIS-SKELLY",
     negara: "England",
-    posisi: "Defenders",
+    posisi: "Midfielders",
     foto: getPlayerImage("lewis_skelly.png"),
   },
 
@@ -267,7 +267,7 @@ const Header = () => (
       🔴 ARSENAL FAN PORTAL
     </h1>
     <p style={{ margin: "5px 0 0 0", opacity: 0.9, fontSize: "14px" }}>
-      Victoria Concordia Crescit
+      North London Forever
     </p>
   </header>
 );
