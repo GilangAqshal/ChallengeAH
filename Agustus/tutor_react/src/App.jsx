@@ -18,7 +18,6 @@ const getFlagUrl = (countryCode) => {
   return `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 };
 
-// Map Kode Negara ISO (2 Karakter)
 const countryCodeMap = {
   Spain: "es",
   France: "fr",
@@ -251,135 +250,30 @@ const dataPemainArsenal = [
 ];
 
 // ==========================================
-// KOMPONEN 1: FORM KOMENTAR
+// NAVBAR & HEADER
 // ==========================================
-const FormKomentar = () => {
-  const [inputTeks, setInputTeks] = useState("");
-  const [listKomentar, setListKomentar] = useState([]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputTeks.trim() === "") return;
-    setListKomentar([...listKomentar, inputTeks]);
-    setInputTeks("");
-  };
-
-  return (
-    <div
-      style={{
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        backgroundColor: "#fff",
-        marginBottom: "20px",
-      }}
-    >
-      <h3 style={{ marginTop: 0 }}>💬 Beri Komentar / Opini:</h3>
-      <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
-        <input
-          type="text"
-          placeholder="Tulis opini kamu di sini..."
-          value={inputTeks}
-          onChange={(e) => setInputTeks(e.target.value)}
-          style={{
-            padding: "10px",
-            flex: "1",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#EF0107",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Kirim
-        </button>
-      </form>
-      {listKomentar.length > 0 && (
-        <div style={{ marginTop: "15px" }}>
-          <h4>Daftar Komentar:</h4>
-          <ul style={{ paddingLeft: "20px" }}>
-            {listKomentar.map((komentar, index) => (
-              <li key={index} style={{ marginBottom: "5px" }}>
-                {komentar}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
+const Header = () => (
+  <header
+    style={{
+      backgroundColor: "#EF0107",
+      color: "white",
+      padding: "20px 0",
+      textAlign: "center",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+      marginBottom: "30px",
+    }}
+  >
+    <h1 style={{ margin: 0, fontSize: "28px", letterSpacing: "2px" }}>
+      🔴 ARSENAL FAN PORTAL
+    </h1>
+    <p style={{ margin: "5px 0 0 0", opacity: 0.9, fontSize: "14px" }}>
+      Victoria Concordia Crescit
+    </p>
+  </header>
+);
 
 // ==========================================
-// KOMPONEN 2: DAFTAR TUGAS
-// ==========================================
-const DaftarTugas = () => {
-  const [tugas, setTugas] = useState(["Belajar React", "Upload Foto Pemain"]);
-
-  const hapusTugas = (indexHapus) => {
-    const tugasBaru = tugas.filter((_, index) => index !== indexHapus);
-    setTugas(tugasBaru);
-  };
-
-  return (
-    <div
-      style={{
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        backgroundColor: "#fff",
-        marginBottom: "20px",
-      }}
-    >
-      <h3 style={{ marginTop: 0 }}>📝 Daftar Tugas Hari Ini:</h3>
-      {tugas.length === 0 ? (
-        <p>Belum ada tugas! 🎉</p>
-      ) : (
-        <ul style={{ padding: 0, listStyle: "none" }}>
-          {tugas.map((item, index) => (
-            <li
-              key={index}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "8px 12px",
-                borderBottom: "1px solid #eee",
-              }}
-            >
-              <span>{item}</span>
-              <button
-                onClick={() => hapusTugas(index)}
-                style={{
-                  backgroundColor: "#ff4d4d",
-                  color: "white",
-                  border: "none",
-                  padding: "4px 8px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Hapus ❌
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-// ==========================================
-// KOMPONEN CARD PEMAIN (BENDERA ASLI + EFEK HOVER)
+// CARD PEMAIN (BENDERA ASLI + EFEK HOVER)
 // ==========================================
 const PlayerCard = ({ pemain }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -390,7 +284,7 @@ const PlayerCard = ({ pemain }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        width: "260px",
+        width: "250px",
         height: "140px",
         borderRadius: "12px",
         background: isHovered
@@ -429,7 +323,7 @@ const PlayerCard = ({ pemain }) => {
             fontWeight: "bold",
             color: "#222",
             marginTop: "6px",
-            maxWidth: "130px",
+            maxWidth: "120px",
             textTransform: "uppercase",
             lineHeight: "1.2",
           }}
@@ -438,7 +332,6 @@ const PlayerCard = ({ pemain }) => {
         </div>
       </div>
 
-      {/* TAMPILAN BENDERA ASLI BESERTA NAMA NEGARA */}
       <div
         style={{
           fontSize: "12px",
@@ -463,7 +356,6 @@ const PlayerCard = ({ pemain }) => {
         <span>{pemain.negara}</span>
       </div>
 
-      {/* GAMBAR PEMAIN */}
       <img
         src={pemain.foto}
         alt={pemain.nama}
@@ -486,7 +378,7 @@ const PlayerCard = ({ pemain }) => {
 };
 
 // ==========================================
-// KOMPONEN 3: SKUAD PEMAIN ARSENAL
+// SKUAD PEMAIN ARSENAL
 // ==========================================
 const SkuadPemain = () => {
   const [kataKunci, setKataKunci] = useState("");
@@ -504,8 +396,8 @@ const SkuadPemain = () => {
   );
 
   return (
-    <div style={{ marginBottom: "30px" }}>
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+    <div style={{ marginBottom: "40px" }}>
+      <div style={{ textAlign: "center", marginBottom: "25px" }}>
         <h2 style={{ color: "#EF0107", marginBottom: "10px" }}>
           🔴 ARSENAL SQUAD
         </h2>
@@ -515,11 +407,12 @@ const SkuadPemain = () => {
           value={kataKunci}
           onChange={(e) => setKataKunci(e.target.value)}
           style={{
-            padding: "10px",
+            padding: "12px 16px",
             width: "100%",
-            maxWidth: "350px",
-            borderRadius: "6px",
+            maxWidth: "400px",
+            borderRadius: "8px",
             border: "1px solid #ccc",
+            outline: "none",
           }}
         />
       </div>
@@ -536,9 +429,10 @@ const SkuadPemain = () => {
               style={{
                 textAlign: "center",
                 letterSpacing: "2px",
-                borderBottom: "1px solid #ccc",
+                borderBottom: "2px solid #EF0107",
                 paddingBottom: "8px",
                 textTransform: "uppercase",
+                color: "#333",
               }}
             >
               {posisi} ⌃
@@ -564,7 +458,7 @@ const SkuadPemain = () => {
 };
 
 // ==========================================
-// KOMPONEN 4: JADWAL ARSENAL
+// JADWAL ARSENAL
 // ==========================================
 const mockJadwalArsenal = [
   {
@@ -574,7 +468,6 @@ const mockJadwalArsenal = [
     strHomeTeam: "Arsenal",
     strAwayTeam: "Wolverhampton",
     dateEvent: "2024-08-17",
-    strTime: "14:00:00",
     strVenue: "Emirates Stadium",
   },
   {
@@ -584,7 +477,6 @@ const mockJadwalArsenal = [
     strHomeTeam: "Aston Villa",
     strAwayTeam: "Arsenal",
     dateEvent: "2024-08-24",
-    strTime: "16:30:00",
     strVenue: "Villa Park",
   },
   {
@@ -594,7 +486,6 @@ const mockJadwalArsenal = [
     strHomeTeam: "Arsenal",
     strAwayTeam: "Brighton",
     dateEvent: "2024-08-31",
-    strTime: "11:30:00",
     strVenue: "Emirates Stadium",
   },
 ];
@@ -630,49 +521,216 @@ const JadwalArsenal = () => {
     <div
       style={{
         padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
+        border: "1px solid #e2e8f0",
+        borderRadius: "12px",
         backgroundColor: "#fff",
+        height: "fit-content",
       }}
     >
-      <h3 style={{ color: "#EF0107", marginTop: 0 }}>
-        📅 Jadwal Pertandingan Arsenal
+      <h3
+        style={{
+          color: "#EF0107",
+          marginTop: 0,
+          borderBottom: "1px solid #eee",
+          paddingBottom: "10px",
+        }}
+      >
+        📅 Jadwal Pertandingan
       </h3>
       {loading ? (
         <p>Memuat jadwal...</p>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {jadwal.slice(0, 3).map((event, index) => (
             <div
               key={event.idEvent || index}
               style={{
-                border: "1px solid #eee",
-                borderRadius: "6px",
-                padding: "10px",
-                backgroundColor: "#f9f9f9",
+                border: "1px solid #edf2f7",
+                borderRadius: "8px",
+                padding: "12px",
+                backgroundColor: "#f8fafc",
               }}
             >
               <div
-                style={{ fontSize: "12px", color: "#666", fontWeight: "bold" }}
+                style={{
+                  fontSize: "11px",
+                  color: "#64748b",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
               >
                 {event.strLeague}{" "}
                 {event.intRound ? `• Round ${event.intRound}` : ""}
               </div>
               <div
                 style={{
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: "bold",
-                  margin: "5px 0",
+                  margin: "6px 0",
+                  color: "#1e293b",
                 }}
               >
                 {event.strHomeTeam} vs {event.strAwayTeam}
               </div>
-              <div style={{ fontSize: "12px", color: "#444" }}>
+              <div style={{ fontSize: "12px", color: "#475569" }}>
                 📅 {event.dateEvent} | 📍 {event.strVenue || "Emirates Stadium"}
               </div>
             </div>
           ))}
         </div>
+      )}
+    </div>
+  );
+};
+
+// ==========================================
+// FORM KOMENTAR
+// ==========================================
+const FormKomentar = () => {
+  const [inputTeks, setInputTeks] = useState("");
+  const [listKomentar, setListKomentar] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputTeks.trim() === "") return;
+    setListKomentar([...listKomentar, inputTeks]);
+    setInputTeks("");
+  };
+
+  return (
+    <div
+      style={{
+        padding: "20px",
+        border: "1px solid #e2e8f0",
+        borderRadius: "12px",
+        backgroundColor: "#fff",
+        marginBottom: "20px",
+      }}
+    >
+      <h3
+        style={{
+          marginTop: 0,
+          color: "#1e293b",
+          borderBottom: "1px solid #eee",
+          paddingBottom: "10px",
+        }}
+      >
+        💬 Diskusi Fans
+      </h3>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", gap: "10px", marginTop: "15px" }}
+      >
+        <input
+          type="text"
+          placeholder="Tulis pendapatmu tentang Arsenal..."
+          value={inputTeks}
+          onChange={(e) => setInputTeks(e.target.value)}
+          style={{
+            padding: "10px 14px",
+            flex: "1",
+            borderRadius: "6px",
+            border: "1px solid #cbd5e1",
+            outline: "none",
+          }}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: "10px 18px",
+            backgroundColor: "#EF0107",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          Kirim
+        </button>
+      </form>
+      {listKomentar.length > 0 && (
+        <div style={{ marginTop: "15px" }}>
+          <ul style={{ paddingLeft: "20px", margin: 0 }}>
+            {listKomentar.map((komentar, index) => (
+              <li key={index} style={{ marginBottom: "6px", color: "#334155" }}>
+                {komentar}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ==========================================
+// DAFTAR TUGAS FANS
+// ==========================================
+const DaftarTugas = () => {
+  const [tugas, setTugas] = useState([
+    "Nonton Pertandingan",
+    "Beli Jersey Terbaru",
+  ]);
+
+  const hapusTugas = (indexHapus) => {
+    setTugas(tugas.filter((_, index) => index !== indexHapus));
+  };
+
+  return (
+    <div
+      style={{
+        padding: "20px",
+        border: "1px solid #e2e8f0",
+        borderRadius: "12px",
+        backgroundColor: "#fff",
+      }}
+    >
+      <h3
+        style={{
+          marginTop: 0,
+          color: "#1e293b",
+          borderBottom: "1px solid #eee",
+          paddingBottom: "10px",
+        }}
+      >
+        📝 Catatan Fans
+      </h3>
+      {tugas.length === 0 ? (
+        <p style={{ color: "#64748b", fontSize: "14px" }}>
+          Semua catatan selesai! 🎉
+        </p>
+      ) : (
+        <ul style={{ padding: 0, listStyle: "none", margin: 0 }}>
+          {tugas.map((item, index) => (
+            <li
+              key={index}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "8px 0",
+                borderBottom: "1px solid #f1f5f9",
+              }}
+            >
+              <span style={{ color: "#334155", fontSize: "14px" }}>{item}</span>
+              <button
+                onClick={() => hapusTugas(index)}
+                style={{
+                  backgroundColor: "#ef4444",
+                  color: "white",
+                  border: "none",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "12px",
+                }}
+              >
+                Hapus
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
@@ -685,18 +743,46 @@ const App = () => {
   return (
     <div
       style={{
-        maxWidth: "1000px",
-        margin: "0 auto",
-        padding: "20px",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        backgroundColor: "#f4f6f9",
+        fontFamily: "'Segoe UI', Roboto, sans-serif",
+        backgroundColor: "#f8fafc",
         minHeight: "100vh",
       }}
     >
-      <FormKomentar />
-      <DaftarTugas />
-      <SkuadPemain />
-      <JadwalArsenal />
+      <Header />
+
+      <main
+        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 20px 40px" }}
+      >
+        {/* SECTION SKUAD PEMAIN UTAMA */}
+        <SkuadPemain />
+
+        {/* SECTION DUA KOLOM: JADWAL & FEATURE LAIN */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          <JadwalArsenal />
+          <div>
+            <FormKomentar />
+            <DaftarTugas />
+          </div>
+        </div>
+      </main>
+
+      <footer
+        style={{
+          backgroundColor: "#061922",
+          color: "#94a3b8",
+          textAlign: "center",
+          padding: "20px",
+          fontSize: "14px",
+        }}
+      >
+        © {new Date().getFullYear()} Arsenal Fan Application. Built with React.
+      </footer>
     </div>
   );
 };
