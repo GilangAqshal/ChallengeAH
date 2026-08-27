@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import GunBot from "./GunBot";
 
 // ==========================================
 // HELPER BACA GAMBAR PEMAIN DARI ASSETS
@@ -908,6 +909,7 @@ const App = () => {
           }}
         >
           <JadwalArsenal />
+          <GunBot />
           <div>
             <FormKomentar />
             <DaftarTugas />
