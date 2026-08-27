@@ -488,34 +488,79 @@ const mockJadwalArsenal = [
     dateEvent: "2024-08-31",
     strVenue: "Emirates Stadium",
   },
+  {
+    idEvent: "4",
+    strLeague: "Premier League",
+    intRound: "4",
+    strHomeTeam: "Tottenham",
+    strAwayTeam: "Arsenal",
+    dateEvent: "2024-09-15",
+    strVenue: "Tottenham Hotspur Stadium",
+  },
+  {
+    idEvent: "5",
+    strLeague: "Premier League",
+    intRound: "5",
+    strHomeTeam: "Manchester City",
+    strAwayTeam: "Arsenal",
+    dateEvent: "2024-09-22",
+    strVenue: "Etihad Stadium",
+  },
+  {
+    idEvent: "6",
+    strLeague: "Premier League",
+    intRound: "6",
+    strHomeTeam: "Arsenal",
+    strAwayTeam: "Leicester City",
+    dateEvent: "2024-09-28",
+    strVenue: "Emirates Stadium",
+  },
 ];
 
 const JadwalArsenal = () => {
   const [jadwal, setJadwal] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Fungsi Fetch Data dari API
+  const fetchJadwalArsenal = async (isManual = false) => {
+    if (isManual) setIsRefreshing(true);
+    try {
+      const res = await fetch(
+        "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604",
+      );
+      const data = await res.json();
+
+      if (data && data.events && data.events.length > 0) {
+        setJadwal(data.events);
+      } else {
+        setJadwal(mockJadwalArsenal);
+      }
+    } catch (err) {
+      setJadwal(mockJadwalArsenal);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+      setLastUpdated(new Date().toLocaleTimeString("id-ID"));
+    }
+  };
 
   useEffect(() => {
-    const fetchJadwalArsenal = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          "https://www.thesportsdb.com/api/v1/json/3/eventsnext.php?id=133604",
-        );
-        const data = await res.json();
-        if (data && data.events && data.events.length > 0) {
-          setJadwal(data.events);
-        } else {
-          setJadwal(mockJadwalArsenal);
-        }
-      } catch (err) {
-        setJadwal(mockJadwalArsenal);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    // 1. Fetch data pertama kali saat komponen di-mount
     fetchJadwalArsenal();
+
+    // 2. Set Polling Interval (Update otomatis setiap 30 detik)
+    const intervalId = setInterval(() => {
+      fetchJadwalArsenal();
+    }, 30000); // 30.000 ms = 30 detik
+
+    // 3. Cleanup interval saat komponen di-unmount
+    return () => clearInterval(intervalId);
   }, []);
+
+  const displayedJadwal = showAll ? jadwal : jadwal.slice(0, 3);
 
   return (
     <div
@@ -527,57 +572,155 @@ const JadwalArsenal = () => {
         height: "fit-content",
       }}
     >
-      <h3
+      {/* HEADER JADWAL & STATUS REALTIME */}
+      <div
         style={{
-          color: "#EF0107",
-          marginTop: 0,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           borderBottom: "1px solid #eee",
           paddingBottom: "10px",
+          marginBottom: "15px",
         }}
       >
-        📅 Jadwal Pertandingan
-      </h3>
+        <h3 style={{ color: "#EF0107", margin: 0 }}>📅 Jadwal Pertandingan</h3>
+
+        {/* INDIKATOR LIVE UPDATE */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "11px",
+            color: "#16a34a",
+            fontWeight: "bold",
+          }}
+        >
+          <span
+            style={{
+              height: "8px",
+              width: "8px",
+              backgroundColor: "#22c55e",
+              borderRadius: "50%",
+              display: "inline-block",
+              boxShadow: "0 0 6px #22c55e",
+            }}
+          ></span>
+          REALTIME
+        </div>
+      </div>
+
       {loading ? (
-        <p>Memuat jadwal...</p>
+        <p style={{ color: "#64748b", fontSize: "14px" }}>Memuat jadwal...</p>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {jadwal.slice(0, 3).map((event, index) => (
-            <div
-              key={event.idEvent || index}
+        <>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+          >
+            {displayedJadwal.map((event, index) => (
+              <div
+                key={event.idEvent || index}
+                style={{
+                  border: "1px solid #edf2f7",
+                  borderRadius: "8px",
+                  padding: "12px",
+                  backgroundColor: "#f8fafc",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "11px",
+                    color: "#64748b",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {event.strLeague}{" "}
+                  {event.intRound ? `• Round ${event.intRound}` : ""}
+                </div>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    margin: "6px 0",
+                    color: "#1e293b",
+                  }}
+                >
+                  {event.strHomeTeam} vs {event.strAwayTeam}
+                </div>
+                <div style={{ fontSize: "12px", color: "#475569" }}>
+                  📅 {event.dateEvent} | 📍{" "}
+                  {event.strVenue || "Emirates Stadium"}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* EKSPLORASI SHOW MORE */}
+          {jadwal.length > 3 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
               style={{
-                border: "1px solid #edf2f7",
+                width: "100%",
+                marginTop: "15px",
+                padding: "10px",
+                backgroundColor: "transparent",
+                color: "#EF0107",
+                border: "1px dashed #EF0107",
                 borderRadius: "8px",
-                padding: "12px",
-                backgroundColor: "#f8fafc",
+                cursor: "pointer",
+                fontWeight: "bold",
+                fontSize: "13px",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#EF0107";
+                e.target.style.color = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "transparent";
+                e.target.style.color = "#EF0107";
               }}
             >
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "#64748b",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                {event.strLeague}{" "}
-                {event.intRound ? `• Round ${event.intRound}` : ""}
-              </div>
-              <div
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  margin: "6px 0",
-                  color: "#1e293b",
-                }}
-              >
-                {event.strHomeTeam} vs {event.strAwayTeam}
-              </div>
-              <div style={{ fontSize: "12px", color: "#475569" }}>
-                📅 {event.dateEvent} | 📍 {event.strVenue || "Emirates Stadium"}
-              </div>
-            </div>
-          ))}
-        </div>
+              {showAll
+                ? "▲ Tampilkan Lebih Sedikit"
+                : `▼ Show More (${jadwal.length - 3} Lagi)`}
+            </button>
+          )}
+
+          {/* FOOTER WAKTU UPDATE & REFRESH MANUAL */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: "15px",
+              paddingTop: "10px",
+              borderTop: "1px solid #f1f5f9",
+              fontSize: "11px",
+              color: "#94a3b8",
+            }}
+          >
+            <span>Update Terakhir: {lastUpdated || "-"}</span>
+            <button
+              onClick={() => fetchJadwalArsenal(true)}
+              disabled={isRefreshing}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#64748b",
+                cursor: isRefreshing ? "not-allowed" : "pointer",
+                fontSize: "11px",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              {isRefreshing ? "🔄 Memperbarui..." : "🔄 Refresh"}
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
