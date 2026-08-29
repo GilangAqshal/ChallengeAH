@@ -235,13 +235,6 @@ const dataPemainArsenal = [
     foto: getPlayerImage("madueke.png"),
   },
   {
-    nomor: 24,
-    nama: "REISS NELSON",
-    negara: "England",
-    posisi: "Forwards",
-    foto: getPlayerImage("nelson.png"),
-  },
-  {
     nomor: 29,
     nama: "KAI HAVERTZ",
     negara: "Germany",
