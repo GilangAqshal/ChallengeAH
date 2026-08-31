@@ -148,6 +148,7 @@ const dataPemainArsenal = [
     posisi: "Midfielders",
     foto: getPlayerImage("eze.png"),
   },
+  // Trasnsfer hamburg
   // {
   //   nomor: 21,
   //   nama: "FABIO VIEIRA",
@@ -199,6 +200,7 @@ const dataPemainArsenal = [
     posisi: "Forwards",
     foto: getPlayerImage("saka.png"),
   },
+  // Transfer barcelona
   // {
   //   nomor: 9,
   //   nama: "GABRIEL JESUS",
@@ -206,6 +208,7 @@ const dataPemainArsenal = [
   //   posisi: "Forwards",
   //   foto: getPlayerImage("jesus.png"),
   // },
+  // transfer al hilal
   // {
   //   nomor: 11,
   //   nama: "GABRIEL MARTINELLI",
