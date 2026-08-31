@@ -148,13 +148,13 @@ const dataPemainArsenal = [
     posisi: "Midfielders",
     foto: getPlayerImage("eze.png"),
   },
-  {
-    nomor: 21,
-    nama: "FABIO VIEIRA",
-    negara: "Portugal",
-    posisi: "Midfielders",
-    foto: getPlayerImage("vieira.png"),
-  },
+  // {
+  //   nomor: 21,
+  //   nama: "FABIO VIEIRA",
+  //   negara: "Portugal",
+  //   posisi: "Midfielders",
+  //   foto: getPlayerImage("vieira.png"),
+  // },
   {
     nomor: 22,
     nama: "ETHAN NWANERI",
