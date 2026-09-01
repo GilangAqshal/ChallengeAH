@@ -160,7 +160,7 @@ const dataPemainArsenal = [
     nomor: 22,
     nama: "ETHAN NWANERI",
     negara: "England",
-    posisi: "Midfielders",
+    posisi: "OnLoan",
     foto: getPlayerImage("nwaneri.png"),
   },
   {
@@ -384,6 +384,7 @@ const SkuadPemain = () => {
     "Defenders",
     "Midfielders",
     "Forwards",
+    "OnLoan",
   ];
 
   const pemainTersaring = dataPemainArsenal.filter(
