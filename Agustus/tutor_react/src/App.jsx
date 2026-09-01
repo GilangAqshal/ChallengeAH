@@ -161,7 +161,7 @@ const dataPemainArsenal = [
     nama: "ETHAN NWANERI",
     negara: "England",
     posisi: "OnLoan",
-    foto: getPlayerImage("nwaneri.png"),
+    foto: getPlayerImage("nwaneriBVB.png"),
   },
   {
     nomor: 23,
