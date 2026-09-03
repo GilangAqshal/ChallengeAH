@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GunBot from "./GunBot";
 
 // ==========================================
@@ -185,7 +185,6 @@ const dataPemainArsenal = [
     posisi: "Forwards",
     foto: getPlayerImage("saka.png"),
   },
-
   {
     nomor: 14,
     nama: "VIKTOR GYÖKERES",
@@ -232,7 +231,6 @@ const dataPemainArsenal = [
     posisi: "Transfer",
     foto: getPlayerImage("vieira.png"),
   },
-  // Transfer barcelona
   {
     nomor: 9,
     nama: "GABRIEL JESUS",
@@ -240,7 +238,6 @@ const dataPemainArsenal = [
     posisi: "Transfer",
     foto: getPlayerImage("gabjesBarca.png"),
   },
-  // transfer al hilal
   {
     nomor: 11,
     nama: "GABRIEL MARTINELLI",
@@ -251,27 +248,431 @@ const dataPemainArsenal = [
 ];
 
 // ==========================================
-// NAVBAR & HEADER
+// TOKEN WARNA & GAYA GLOBAL
 // ==========================================
-const Header = () => (
+const WARNA = {
+  merah: "#EF0107",
+  merahGelap: "#B90000",
+  navy: "#061922",
+  emas: "#9C824A",
+  abu: "#64748b",
+  bgHalus: "#f8fafc",
+};
+
+// Style global (grid 3 kolom tetap, navbar, scrollbar, dsb) — dipasang lewat <style> tag
+// karena proyek ini pakai inline style, bukan file CSS terpisah.
+const GlobalStyle = () => (
+  <style>{`
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; }
+
+    /* ===== GRID SKUAD: SELALU 3 KOLOM, RESPONSIVE ===== */
+    .grid-skuad {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(8px, 2vw, 20px);
+    }
+
+    .kartu-pemain {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      padding: clamp(8px, 1.6vw, 16px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .kartu-pemain .nomor-punggung {
+      font-size: clamp(13px, 2.6vw, 22px);
+      font-weight: 800;
+      color: #111;
+      line-height: 1;
+    }
+
+    .kartu-pemain .nama-pemain {
+      font-size: clamp(9px, 1.6vw, 14px);
+      font-weight: bold;
+      color: #222;
+      margin-top: 4px;
+      max-width: 70%;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .kartu-pemain .info-negara {
+      font-size: clamp(8px, 1.3vw, 12px);
+      color: #444;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .kartu-pemain .info-negara img {
+      width: clamp(12px, 2vw, 18px);
+      height: auto;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      object-fit: cover;
+    }
+
+    .kartu-pemain .foto-pemain {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      height: 88%;
+      width: auto;
+      max-width: 65%;
+      object-fit: contain;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 480px) {
+      .kartu-pemain .nama-pemain { max-width: 62%; }
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar-link {
+      position: relative;
+      color: #f4f4f4;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 2px;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+    .navbar-link:hover { opacity: 1; }
+    .navbar-link::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: #ffffff;
+      transition: width 0.25s ease;
+    }
+    .navbar-link:hover::after { width: 100%; }
+
+    /* ===== TOMBOL FLOATING CHAT ===== */
+    .tombol-chat-float {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: none;
+      background: ${WARNA.merah};
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 8px 24px rgba(239,1,7,0.4);
+      cursor: pointer;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .tombol-chat-float:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 28px rgba(239,1,7,0.5);
+    }
+
+    .panel-chat {
+      position: fixed;
+      right: 22px;
+      bottom: 92px;
+      width: min(360px, calc(100vw - 44px));
+      max-height: min(560px, calc(100vh - 140px));
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      z-index: 60;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: munculPanel 0.22s ease;
+    }
+
+    @keyframes munculPanel {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .kartu-pemain, .tombol-chat-float, .panel-chat { transition: none; animation: none; }
+    }
+  `}</style>
+);
+
+// ==========================================
+// NAVBAR
+// ==========================================
+const Navbar = ({ onOpenChat }) => {
+  const [menuTerbuka, setMenuTerbuka] = useState(false);
+
+  const tautan = [
+    { label: "Skuad", href: "#skuad" },
+    { label: "Jadwal", href: "#jadwal" },
+    { label: "Diskusi Fans", href: "#diskusi" },
+  ];
+
+  return (
+    <nav
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        backgroundColor: WARNA.navy,
+        padding: "12px 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.25)",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div
+          style={{
+            width: "34px",
+            height: "34px",
+            borderRadius: "50%",
+            backgroundColor: WARNA.merah,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontWeight: 800,
+            fontSize: "14px",
+          }}
+        >
+          AR
+        </div>
+        <span
+          style={{
+            color: "white",
+            fontWeight: 700,
+            letterSpacing: "1px",
+            fontSize: "15px",
+          }}
+        >
+          ARSENAL FAN PORTAL
+        </span>
+      </div>
+
+      {/* Menu desktop */}
+      <div
+        style={{ display: "flex", alignItems: "center", gap: "26px" }}
+        className="menu-desktop"
+      >
+        {tautan.map((t) => (
+          <a key={t.href} href={t.href} className="navbar-link">
+            {t.label}
+          </a>
+        ))}
+        <button
+          onClick={onOpenChat}
+          style={{
+            backgroundColor: WARNA.merah,
+            color: "white",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontSize: "13px",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          💬 Tanya GunBot
+        </button>
+      </div>
+
+      {/* Tombol menu mobile */}
+      <button
+        onClick={() => setMenuTerbuka(!menuTerbuka)}
+        style={{
+          display: "none",
+          background: "transparent",
+          border: "none",
+          color: "white",
+          fontSize: "22px",
+          cursor: "pointer",
+        }}
+        className="tombol-menu-mobile"
+        aria-label="Buka menu"
+      >
+        {menuTerbuka ? "✕" : "☰"}
+      </button>
+
+      <style>{`
+        @media (max-width: 720px) {
+          .menu-desktop { display: none !important; }
+          .tombol-menu-mobile { display: block !important; }
+        }
+      `}</style>
+
+      {menuTerbuka && (
+        <div
+          style={{
+            position: "absolute",
+            top: "56px",
+            left: 0,
+            right: 0,
+            backgroundColor: WARNA.navy,
+            display: "flex",
+            flexDirection: "column",
+            padding: "14px 20px",
+            gap: "14px",
+            boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
+          }}
+        >
+          {tautan.map((t) => (
+            <a
+              key={t.href}
+              href={t.href}
+              className="navbar-link"
+              onClick={() => setMenuTerbuka(false)}
+            >
+              {t.label}
+            </a>
+          ))}
+          <button
+            onClick={() => {
+              setMenuTerbuka(false);
+              onOpenChat();
+            }}
+            style={{
+              backgroundColor: WARNA.merah,
+              color: "white",
+              border: "none",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: 700,
+              cursor: "pointer",
+              width: "100%",
+            }}
+          >
+            💬 Tanya GunBot
+          </button>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+// ==========================================
+// HERO SECTION
+// ==========================================
+const Hero = () => (
   <header
     style={{
-      backgroundColor: "#EF0107",
+      background: `linear-gradient(135deg, ${WARNA.navy} 0%, #0d2c3d 55%, ${WARNA.merahGelap} 130%)`,
       color: "white",
-      padding: "20px 0",
+      padding: "56px 20px 44px",
       textAlign: "center",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      marginBottom: "30px",
     }}
   >
-    <h1 style={{ margin: 0, fontSize: "28px", letterSpacing: "2px" }}>
-      🔴 ARSENAL FAN PORTAL
-    </h1>
-    <p style={{ margin: "5px 0 0 0", opacity: 0.9, fontSize: "14px" }}>
+    <p
+      style={{
+        margin: 0,
+        color: "#f4c1c1",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "1px",
+      }}
+    >
       North London Forever
+    </p>
+    <h1
+      style={{
+        margin: "10px 0 0",
+        fontSize: "clamp(28px, 5vw, 44px)",
+        lineHeight: 1.1,
+      }}
+    >
+      Rumah digital fans Arsenal
+    </h1>
+    <p
+      style={{
+        maxWidth: "560px",
+        margin: "14px auto 0",
+        color: "#d7dde3",
+        fontSize: "15px",
+      }}
+    >
+      Pantau skuad, jadwal pertandingan terbaru, dan ngobrol bareng fans lain —
+      semua dalam satu halaman.
     </p>
   </header>
 );
+
+// ==========================================
+// STRIP INFO PENTING (FAKTA KLUB)
+// ==========================================
+const InfoPenting = () => {
+  const fakta = [
+    { label: "Berdiri", nilai: "1886" },
+    { label: "Kandang", nilai: "Emirates Stadium" },
+    { label: "Kapasitas", nilai: "60.704" },
+    { label: "Pelatih", nilai: "Mikel Arteta" },
+    { label: "Juara Liga", nilai: "13x" },
+    { label: "Piala FA", nilai: "14x" },
+  ];
+
+  return (
+    <div
+      style={{
+        maxWidth: "1100px",
+        margin: "-28px auto 30px",
+        padding: "0 20px",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          borderRadius: "14px",
+          boxShadow: "0 12px 30px rgba(6,25,34,0.12)",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+          overflow: "hidden",
+        }}
+      >
+        {fakta.map((f, i) => (
+          <div
+            key={f.label}
+            style={{
+              padding: "16px 12px",
+              textAlign: "center",
+              borderRight:
+                i !== fakta.length - 1 ? "1px solid #eef1f5" : "none",
+            }}
+          >
+            <div
+              style={{ fontSize: "16px", fontWeight: 800, color: WARNA.navy }}
+            >
+              {f.nilai}
+            </div>
+            <div
+              style={{ fontSize: "11px", color: WARNA.abu, marginTop: "3px" }}
+            >
+              {f.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // ==========================================
 // CARD PEMAIN (BENDERA ASLI + EFEK HOVER)
@@ -282,96 +683,38 @@ const PlayerCard = ({ pemain }) => {
 
   return (
     <div
+      className="kartu-pemain"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        width: "250px",
-        height: "140px",
-        borderRadius: "12px",
         background: isHovered
           ? "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)"
           : "linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)",
-        border: isHovered ? "1px solid #EF0107" : "1px solid #dcdcdc",
+        border: isHovered ? `1px solid ${WARNA.merah}` : "1px solid #dcdcdc",
         boxShadow: isHovered
           ? "0 10px 20px rgba(239, 1, 7, 0.15)"
           : "0 4px 8px rgba(0, 0, 0, 0.05)",
-        position: "relative",
-        overflow: "hidden",
-        padding: "15px",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        transform: isHovered ? "translateY(-5px)" : "translateY(0)",
-        transition: "all 0.3s ease",
-        cursor: "pointer",
+        transform: isHovered ? "translateY(-4px)" : "translateY(0)",
       }}
     >
       <div>
-        <div
-          style={{
-            fontSize: "22px",
-            fontWeight: "800",
-            color: "#111",
-            lineHeight: "1",
-          }}
-        >
-          {pemain.nomor}
-        </div>
-        <div
-          style={{
-            fontSize: "14px",
-            fontWeight: "bold",
-            color: "#222",
-            marginTop: "6px",
-            maxWidth: "120px",
-            textTransform: "uppercase",
-            lineHeight: "1.2",
-          }}
-        >
-          {pemain.nama}
-        </div>
+        <div className="nomor-punggung">{pemain.nomor}</div>
+        <div className="nama-pemain">{pemain.nama}</div>
       </div>
 
-      <div
-        style={{
-          fontSize: "12px",
-          color: "#444",
-          fontWeight: "600",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        }}
-      >
-        <img
-          src={getFlagUrl(countryCode)}
-          alt={pemain.negara}
-          style={{
-            width: "18px",
-            height: "13px",
-            borderRadius: "2px",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-            objectFit: "cover",
-          }}
-        />
+      <div className="info-negara">
+        <img src={getFlagUrl(countryCode)} alt={pemain.negara} />
         <span>{pemain.negara}</span>
       </div>
 
       <img
         src={pemain.foto}
         alt={pemain.nama}
+        className="foto-pemain"
         style={{
-          position: "absolute",
-          right: "0px",
-          bottom: "0px",
-          height: "130px",
-          width: "auto",
-          objectFit: "contain",
-          zIndex: 1,
           opacity: isHovered ? 1 : 0.35,
-          transform: isHovered ? "scale(1.08)" : "scale(1)",
+          transform: isHovered ? "scale(1.06)" : "scale(1)",
           filter: isHovered ? "brightness(100%)" : "brightness(90%)",
-          transition: "all 0.3s ease",
         }}
       />
     </div>
@@ -399,9 +742,12 @@ const SkuadPemain = () => {
   );
 
   return (
-    <div style={{ marginBottom: "40px" }}>
+    <section
+      id="skuad"
+      style={{ marginBottom: "40px", scrollMarginTop: "80px" }}
+    >
       <div style={{ textAlign: "center", marginBottom: "25px" }}>
-        <h2 style={{ color: "#EF0107", marginBottom: "10px" }}>
+        <h2 style={{ color: WARNA.merah, marginBottom: "10px" }}>
           🔴 ARSENAL SQUAD
         </h2>
         <input
@@ -432,23 +778,16 @@ const SkuadPemain = () => {
               style={{
                 textAlign: "center",
                 letterSpacing: "2px",
-                borderBottom: "2px solid #EF0107",
+                borderBottom: `2px solid ${WARNA.merah}`,
                 paddingBottom: "8px",
                 textTransform: "uppercase",
                 color: "#333",
               }}
             >
-              {posisi} ⌃
+              {posisi}
             </h3>
 
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                justifyContent: "center",
-              }}
-            >
+            <div className="grid-skuad">
               {pemainKategori.map((pemain) => (
                 <PlayerCard key={pemain.nomor} pemain={pemain} />
               ))}
@@ -456,7 +795,13 @@ const SkuadPemain = () => {
           </div>
         );
       })}
-    </div>
+
+      {pemainTersaring.length === 0 && (
+        <p style={{ textAlign: "center", color: WARNA.abu }}>
+          Tidak ada pemain yang cocok dengan pencarian "{kataKunci}".
+        </p>
+      )}
+    </section>
   );
 };
 
@@ -527,7 +872,6 @@ const JadwalArsenal = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Fungsi Fetch Data dari API
   const fetchJadwalArsenal = async (isManual = false) => {
     if (isManual) setIsRefreshing(true);
     try {
@@ -551,15 +895,10 @@ const JadwalArsenal = () => {
   };
 
   useEffect(() => {
-    // 1. Fetch data pertama kali saat komponen di-mount
     fetchJadwalArsenal();
-
-    // 2. Set Polling Interval (Update otomatis setiap 30 detik)
     const intervalId = setInterval(() => {
       fetchJadwalArsenal();
-    }, 30000); // 30.000 ms = 30 detik
-
-    // 3. Cleanup interval saat komponen di-unmount
+    }, 30000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -567,15 +906,16 @@ const JadwalArsenal = () => {
 
   return (
     <div
+      id="jadwal"
       style={{
         padding: "20px",
         border: "1px solid #e2e8f0",
         borderRadius: "12px",
         backgroundColor: "#fff",
         height: "fit-content",
+        scrollMarginTop: "80px",
       }}
     >
-      {/* HEADER JADWAL & STATUS REALTIME */}
       <div
         style={{
           display: "flex",
@@ -586,9 +926,10 @@ const JadwalArsenal = () => {
           marginBottom: "15px",
         }}
       >
-        <h3 style={{ color: "#EF0107", margin: 0 }}>📅 Jadwal Pertandingan</h3>
+        <h3 style={{ color: WARNA.merah, margin: 0 }}>
+          📅 Jadwal Pertandingan
+        </h3>
 
-        {/* INDIKATOR LIVE UPDATE */}
         <div
           style={{
             display: "flex",
@@ -659,7 +1000,6 @@ const JadwalArsenal = () => {
             ))}
           </div>
 
-          {/* EKSPLORASI SHOW MORE */}
           {jadwal.length > 3 && (
             <button
               onClick={() => setShowAll(!showAll)}
@@ -668,8 +1008,8 @@ const JadwalArsenal = () => {
                 marginTop: "15px",
                 padding: "10px",
                 backgroundColor: "transparent",
-                color: "#EF0107",
-                border: "1px dashed #EF0107",
+                color: WARNA.merah,
+                border: `1px dashed ${WARNA.merah}`,
                 borderRadius: "8px",
                 cursor: "pointer",
                 fontWeight: "bold",
@@ -677,12 +1017,12 @@ const JadwalArsenal = () => {
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = "#EF0107";
+                e.target.style.backgroundColor = WARNA.merah;
                 e.target.style.color = "#fff";
               }}
               onMouseLeave={(e) => {
                 e.target.style.backgroundColor = "transparent";
-                e.target.style.color = "#EF0107";
+                e.target.style.color = WARNA.merah;
               }}
             >
               {showAll
@@ -691,7 +1031,6 @@ const JadwalArsenal = () => {
             </button>
           )}
 
-          {/* FOOTER WAKTU UPDATE & REFRESH MANUAL */}
           <div
             style={{
               display: "flex",
@@ -784,7 +1123,7 @@ const FormKomentar = () => {
           type="submit"
           style={{
             padding: "10px 18px",
-            backgroundColor: "#EF0107",
+            backgroundColor: WARNA.merah,
             color: "white",
             border: "none",
             borderRadius: "6px",
@@ -883,35 +1222,97 @@ const DaftarTugas = () => {
 };
 
 // ==========================================
+// CHATBOT MENGAMBANG (MUNCUL SAAT DIPENCET SAJA)
+// ==========================================
+const ChatbotMengambang = ({ terbuka, onClose }) => {
+  const panelRef = useRef(null);
+
+  // Tutup panel saat klik di luar area chat
+  useEffect(() => {
+    if (!terbuka) return;
+    const handleClickLuar = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickLuar);
+    return () => document.removeEventListener("mousedown", handleClickLuar);
+  }, [terbuka, onClose]);
+
+  if (!terbuka) return null;
+
+  return (
+    <div className="panel-chat" ref={panelRef}>
+      <div
+        style={{
+          backgroundColor: WARNA.merah,
+          color: "white",
+          padding: "12px 16px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <span style={{ fontWeight: 700, fontSize: "14px" }}>
+          🤖 GunBot Assistant
+        </span>
+        <button
+          onClick={onClose}
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "white",
+            fontSize: "18px",
+            cursor: "pointer",
+            lineHeight: 1,
+          }}
+          aria-label="Tutup chat"
+        >
+          ✕
+        </button>
+      </div>
+      <div style={{ flex: 1, overflowY: "auto", backgroundColor: "#fff" }}>
+        <GunBot />
+      </div>
+    </div>
+  );
+};
+
+// ==========================================
 // KOMPONEN UTAMA (APP)
 // ==========================================
 const App = () => {
+  const [chatTerbuka, setChatTerbuka] = useState(false);
+
   return (
     <div
       style={{
         fontFamily: "'Segoe UI', Roboto, sans-serif",
-        backgroundColor: "#f8fafc",
+        backgroundColor: WARNA.bgHalus,
         minHeight: "100vh",
       }}
     >
-      <Header />
+      <GlobalStyle />
+
+      <Navbar onOpenChat={() => setChatTerbuka(true)} />
+      <Hero />
+      <InfoPenting />
 
       <main
         style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 20px 40px" }}
       >
-        {/* SECTION SKUAD PEMAIN UTAMA */}
         <SkuadPemain />
 
-        {/* SECTION DUA KOLOM: JADWAL & FEATURE LAIN */}
         <div
+          id="diskusi"
           style={{
+            scrollMarginTop: "80px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
             gap: "20px",
           }}
         >
           <JadwalArsenal />
-          <GunBot />
           <div>
             <FormKomentar />
             <DaftarTugas />
@@ -921,7 +1322,7 @@ const App = () => {
 
       <footer
         style={{
-          backgroundColor: "#061922",
+          backgroundColor: WARNA.navy,
           color: "#94a3b8",
           textAlign: "center",
           padding: "20px",
@@ -930,6 +1331,19 @@ const App = () => {
       >
         © {new Date().getFullYear()} Arsenal Fan Application. Built with React.
       </footer>
+
+      {/* Tombol chat mengambang: chatbot hanya muncul saat dipencet */}
+      <button
+        className="tombol-chat-float"
+        onClick={() => setChatTerbuka((v) => !v)}
+        aria-label="Buka chatbot GunBot"
+      >
+        {chatTerbuka ? "✕" : "💬"}
+      </button>
+      <ChatbotMengambang
+        terbuka={chatTerbuka}
+        onClose={() => setChatTerbuka(false)}
+      />
     </div>
   );
 };
