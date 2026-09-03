@@ -148,21 +148,6 @@ const dataPemainArsenal = [
     posisi: "Midfielders",
     foto: getPlayerImage("eze.png"),
   },
-  // Trasnsfer hamburg
-  // {
-  //   nomor: 21,
-  //   nama: "FABIO VIEIRA",
-  //   negara: "Portugal",
-  //   posisi: "Midfielders",
-  //   foto: getPlayerImage("vieira.png"),
-  // },
-  {
-    nomor: 22,
-    nama: "ETHAN NWANERI",
-    negara: "England",
-    posisi: "OnLoan",
-    foto: getPlayerImage("nwaneriBVB.png"),
-  },
   {
     nomor: 23,
     nama: "MIKEL MERINO",
@@ -200,22 +185,7 @@ const dataPemainArsenal = [
     posisi: "Forwards",
     foto: getPlayerImage("saka.png"),
   },
-  // Transfer barcelona
-  // {
-  //   nomor: 9,
-  //   nama: "GABRIEL JESUS",
-  //   negara: "Brazil",
-  //   posisi: "Forwards",
-  //   foto: getPlayerImage("jesus.png"),
-  // },
-  // transfer al hilal
-  // {
-  //   nomor: 11,
-  //   nama: "GABRIEL MARTINELLI",
-  //   negara: "Brazil",
-  //   posisi: "Forwards",
-  //   foto: getPlayerImage("martinelli.png"),
-  // },
+
   {
     nomor: 14,
     nama: "VIKTOR GYÖKERES",
@@ -243,6 +213,40 @@ const dataPemainArsenal = [
     negara: "Germany",
     posisi: "Forwards",
     foto: getPlayerImage("havertz.png"),
+  },
+
+  // On Loan
+  {
+    nomor: 22,
+    nama: "ETHAN NWANERI",
+    negara: "England",
+    posisi: "OnLoan",
+    foto: getPlayerImage("nwaneriBVB.png"),
+  },
+
+  // Transfer List
+  {
+    nomor: 21,
+    nama: "FABIO VIEIRA",
+    negara: "Portugal",
+    posisi: "Transfer",
+    foto: getPlayerImage("vieira.png"),
+  },
+  // Transfer barcelona
+  {
+    nomor: 9,
+    nama: "GABRIEL JESUS",
+    negara: "Brazil",
+    posisi: "Transfer",
+    foto: getPlayerImage("gabjesBarca.png"),
+  },
+  // transfer al hilal
+  {
+    nomor: 11,
+    nama: "GABRIEL MARTINELLI",
+    negara: "Brazil",
+    posisi: "Transfer",
+    foto: getPlayerImage("martinelliHILAL.png"),
   },
 ];
 
@@ -385,6 +389,7 @@ const SkuadPemain = () => {
     "Midfielders",
     "Forwards",
     "OnLoan",
+    "Transfer",
   ];
 
   const pemainTersaring = dataPemainArsenal.filter(
