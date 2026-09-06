@@ -32,6 +32,9 @@ const countryCodeMap = {
   Sweden: "se",
   Greece: "gr",
   Germany: "de",
+  Denmark: "dk",
+  Belgium: "be",
+  Polandia: "pl",
 };
 
 // ==========================================
@@ -59,13 +62,6 @@ const dataPemainArsenal = [
     negara: "France",
     posisi: "Goalkeepers",
     foto: getPlayerImage("meslier.png"),
-  },
-  {
-    nomor: 35,
-    nama: "TOMMY SETFORD",
-    negara: "England",
-    posisi: "Goalkeepers",
-    foto: getPlayerImage("setford.png"),
   },
 
   // --- DEFENDERS ---
@@ -129,7 +125,7 @@ const dataPemainArsenal = [
     nomor: 49,
     nama: "MYLES LEWIS-SKELLY",
     negara: "England",
-    posisi: "Midfielders",
+    posisi: "Defenders",
     foto: getPlayerImage("lewis_skelly.png"),
   },
 
@@ -222,14 +218,27 @@ const dataPemainArsenal = [
     posisi: "OnLoan",
     foto: getPlayerImage("nwaneriBVB.png"),
   },
-
+  {
+    nomor: 35,
+    nama: "TOMMY SETFORD",
+    negara: "England",
+    posisi: "OnLoan",
+    foto: getPlayerImage("setford.png"),
+  },
   // Transfer List
   {
     nomor: 21,
     nama: "FABIO VIEIRA",
     negara: "Portugal",
     posisi: "Transfer",
-    foto: getPlayerImage("vieira.png"),
+    foto: getPlayerImage("vieraHamburg.png"),
+  },
+  {
+    nomor: 19,
+    nama: "LEADRO TROSSARD",
+    negara: "Belgium",
+    posisi: "Transfer",
+    foto: getPlayerImage("trossard.png"),
   },
   {
     nomor: 9,
@@ -244,6 +253,20 @@ const dataPemainArsenal = [
     negara: "Brazil",
     posisi: "Transfer",
     foto: getPlayerImage("martinelliHILAL.png"),
+  },
+  {
+    nomor: 16,
+    nama: "CHRISTIAN NORGARD",
+    negara: "Denmark",
+    posisi: "Transfer",
+    foto: getPlayerImage("norgardEverton.png"),
+  },
+  {
+    nomor: 28,
+    nama: "JAKUB KIWIOR",
+    negara: "Polandia",
+    posisi: "Transfer",
+    foto: getPlayerImage("norgardEverton.png"),
   },
 ];
 
@@ -576,7 +599,7 @@ const Navbar = ({ onOpenChat }) => {
 const Hero = () => (
   <header
     style={{
-      background: `linear-gradient(135deg, ${WARNA.navy} 0%, #0d2c3d 55%, ${WARNA.merahGelap} 130%)`,
+      background: `linear-gradient(135deg, ${WARNA.merah} 0%, ${WARNA.merahGelap} 100%)`,
       color: "white",
       padding: "56px 20px 44px",
       textAlign: "center",
@@ -585,7 +608,8 @@ const Hero = () => (
     <p
       style={{
         margin: 0,
-        color: "#f4c1c1",
+        color: "#ffffff",
+        opacity: 0.85,
         fontSize: "13px",
         fontWeight: 600,
         letterSpacing: "1px",
@@ -598,6 +622,7 @@ const Hero = () => (
         margin: "10px 0 0",
         fontSize: "clamp(28px, 5vw, 44px)",
         lineHeight: 1.1,
+        color: "#ffffff",
       }}
     >
       Rumah digital fans Arsenal
@@ -606,7 +631,8 @@ const Hero = () => (
       style={{
         maxWidth: "560px",
         margin: "14px auto 0",
-        color: "#d7dde3",
+        color: "#ffffff",
+        opacity: 0.9,
         fontSize: "15px",
       }}
     >
