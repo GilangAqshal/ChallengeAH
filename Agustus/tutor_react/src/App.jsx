@@ -266,7 +266,7 @@ const dataPemainArsenal = [
     nama: "JAKUB KIWIOR",
     negara: "Polandia",
     posisi: "Transfer",
-    foto: getPlayerImage("norgardEverton.png"),
+    foto: getPlayerImage("kiwior.png"),
   },
 ];
 
