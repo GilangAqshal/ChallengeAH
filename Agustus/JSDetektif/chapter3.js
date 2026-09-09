@@ -1,4 +1,3 @@
-// The Alibi Contradiction
 // data tersangka
 const suspect = [
   { name: "Deni", location: "Zona Utama", accessTime: 22.25, securityLevel: 2 },
