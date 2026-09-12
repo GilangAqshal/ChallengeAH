@@ -57,3 +57,14 @@ for (let i = 0; i < employeeDatabase.length; i++) {
     }
   }
 }
+
+console.log(`
+  Case ID : Case-004
+  Crime : Pencurian Laporang Keuangan Rahasia Apex Global
+  Culprit: Hendra
+  Primary Evidence: ID Pelaku & Suspicionscore pelaku 85
+  Investigation Method: Menggunakan for untuk melakukan looping berdasarkan panjang data dari employeeDatabase
+                        melakukan perbandingan or untuk department IT dan Operation lalu menggunakan and
+                        untuk mencocokan service kalau true serta suspicionScorenya diatas 75 dan belogings USB Drive
+                        
+  `);
