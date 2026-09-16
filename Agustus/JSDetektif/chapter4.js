@@ -50,6 +50,16 @@ const employeeDatabase = [
     },
     belongings: ["USB Drive", "ID Card"],
   },
+  {
+    id: "EMP-005",
+    name: "Anwar",
+    department: "IT",
+    security: {
+      hasServerAccess: true,
+      suspicionScore: 40,
+    },
+    belongings: ["USB Drive", "ID Card"],
+  },
 ];
 
 for (let i = 0; i < employeeDatabase.length; i++) {
