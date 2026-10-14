@@ -1,4 +1,4 @@
-!pip install -q gradio scikit-learn
+# !pip install -q gradio scikit-learn
 
 X = [
     [2, 50],
