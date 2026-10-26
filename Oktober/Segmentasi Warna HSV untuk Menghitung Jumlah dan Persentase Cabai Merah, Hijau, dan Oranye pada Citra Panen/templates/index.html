@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CabaiVision | Segmentasi HSV</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f7f5;
+        color: #20332a;
+      }
+
+      header {
+        background: #173f2b;
+        color: white;
+        padding: 22px 7%;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 25px;
+      }
+
+      header p {
+        margin-bottom: 0;
+        color: #d5e7da;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 35px auto;
+        padding: 0 20px;
+      }
+
+      .panel {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 5px 24px #193d2a0d;
+        margin-bottom: 22px;
+      }
+
+      h2 {
+        margin-top: 0;
+      }
+
+      .dropzone {
+        border: 2px dashed #a7c7b0;
+        border-radius: 14px;
+        padding: 35px 15px;
+        text-align: center;
+        background: #f9fcf9;
+      }
+
+      input[type="file"] {
+        display: block;
+        max-width: 100%;
+        margin: 18px auto;
+      }
+
+      button {
+        background: #1b7043;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 13px 22px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      img {
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
+      .preview {
+        max-height: 420px;
+        object-fit: contain;
+        margin-top: 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .stat {
+        padding: 22px;
+        border-radius: 12px;
+        background: #f8faf8;
+        border: 1px solid #e5eee7;
+      }
+
+      .stat h3 {
+        margin: 0 0 12px;
+      }
+
+      .number {
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .muted {
+        color: #64746a;
+        font-size: 14px;
+      }
+
+      .results-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .results-grid h3 {
+        margin-bottom: 12px;
+      }
+
+      #results,
+      #status {
+        display: none;
+      }
+
+      #status {
+        margin-top: 18px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #edf6ef;
+      }
+
+      .warning {
+        background: #fff6df;
+        padding: 14px;
+        border-radius: 10px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 650px) {
+        .grid,
+        .results-grid {
+          grid-template-columns: 1fr;
+        }
+
+        header h1 {
+          font-size: 21px;
+        }
+
+        .panel {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>🌶️ CabaiVision</h1>
+      <p>Segmentasi warna HSV dan penghitungan cabai otomatis</p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2>Analisis Citra Panen</h2>
+        <p class="muted">
+          Unggah foto cabai baru untuk menghitung warna merah, hijau, dan
+          oranye.
+        </p>
+
+        <form id="uploadForm">
+          <div class="dropzone">
+            <strong>Pilih gambar panen cabai</strong>
+            <p class="muted">
+              Format JPG, PNG, WEBP, atau BMP · Maksimal 15 MB
+            </p>
+            <input
+              type="file"
+              id="gambar"
+              name="gambar"
+              accept=".jpg,.jpeg,.png,.webp,.bmp"
+              required
+            />
+            <img id="preview" class="preview" alt="Pratinjau gambar" hidden />
+            <br />
+            <button id="analyzeBtn" type="submit">Analisis Gambar</button>
+          </div>
+        </form>
+
+        <div id="status" role="status"></div>
+      </section>
+
+      <section id="results">
+        <div class="panel">
+          <h2>Ringkasan Hasil</h2>
+
+          <div class="grid">
+            <div class="stat">
+              <h3>🔴 Cabai Merah</h3>
+              <div class="number" id="merah">0</div>
+              <p id="persenMerah">0%</p>
+            </div>
+
+            <div class="stat">
+              <h3>🟢 Cabai Hijau</h3>
+              <div class="number" id="hijau">0</div>
+              <p id="persenHijau">0%</p>
+            </div>
+
+            <div class="stat">
+              <h3>🟠 Cabai Oranye</h3>
+              <div class="number" id="oranye">0</div>
+              <p id="persenOranye">0%</p>
+            </div>
+          </div>
+
+          <h2 style="margin-top: 25px">
+            Total: <span id="total">0</span> cabai
+          </h2>
+        </div>
+
+        <div class="panel">
+          <h2>Visualisasi Pengolahan Citra</h2>
+
+          <div class="results-grid">
+            <div>
+              <h3>Hasil Deteksi</h3>
+              <img id="hasilImg" alt="Hasil deteksi cabai" />
+            </div>
+
+            <div>
+              <h3>Mask Segmentasi HSV</h3>
+              <img id="maskImg" alt="Mask segmentasi warna" />
+              <p class="muted">
+                Area putih menunjukkan piksel yang masuk ke salah satu rentang
+                warna HSV.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning">
+          <strong>Catatan:</strong>
+          Hasil merupakan estimasi berbasis warna dan kontur. Cabai yang saling
+          menempel, tertutup, atau memiliki pencahayaan yang kurang baik dapat
+          menyebabkan kesalahan penghitungan.
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("uploadForm");
+      const input = document.getElementById("gambar");
+      const preview = document.getElementById("preview");
+      const button = document.getElementById("analyzeBtn");
+      const status = document.getElementById("status");
+      const results = document.getElementById("results");
+
+      input.addEventListener("change", () => {
+        const file = input.files[0];
+
+        if (!file) {
+          preview.hidden = true;
+          return;
+        }
+
+        preview.src = URL.createObjectURL(file);
+        preview.hidden = false;
+        results.style.display = "none";
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const file = input.files[0];
+
+        if (!file) {
+          alert("Pilih gambar terlebih dahulu.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("gambar", file);
+
+        button.disabled = true;
+        button.textContent = "Sedang menganalisis...";
+        status.style.display = "block";
+        status.textContent = "Memproses gambar dengan metode HSV...";
+        results.style.display = "none";
+
+        try {
+          const response = await fetch("/api/analyze", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Analisis gagal.");
+          }
+
+          const s = data.statistik;
+
+          document.getElementById("merah").textContent = s.Merah.jumlah;
+          document.getElementById("hijau").textContent = s.Hijau.jumlah;
+          document.getElementById("oranye").textContent = s.Oranye.jumlah;
+
+          document.getElementById("persenMerah").textContent =
+            s.Merah.persentase.toFixed(2) + "%";
+          document.getElementById("persenHijau").textContent =
+            s.Hijau.persentase.toFixed(2) + "%";
+          document.getElementById("persenOranye").textContent =
+            s.Oranye.persentase.toFixed(2) + "%";
+
+          document.getElementById("total").textContent = data.total;
+
+          document.getElementById("hasilImg").src =
+            "data:image/jpeg;base64," + data.hasil;
+          document.getElementById("maskImg").src =
+            "data:image/jpeg;base64," + data.mask;
+
+          results.style.display = "block";
+          status.textContent = "Analisis berhasil diselesaikan.";
+
+          results.scrollIntoView({ behavior: "smooth" });
+        } catch (error) {
+          status.textContent = "Gagal: " + error.message;
+        } finally {
+          button.disabled = false;
+          button.textContent = "Analisis Gambar";
+        }
+      });
+    </script>
+  </body>
+</html>
