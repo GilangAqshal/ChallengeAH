@@ -1,13 +1,15 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../core/theme.dart';
+import 'app_assets.dart';
 
 const _inputShadow = [
   BoxShadow(color: Color(0x40000000), blurRadius: 4, offset: Offset(0, 4)),
   BoxShadow(color: Color(0x3DE4E5E7), blurRadius: 2, offset: Offset(0, 1)),
 ];
 
-/// Latar oranye-biru kabur + kartu putih 26px (layar Login/Sign up/Personal Data).
-/// Jika bg_login.png sudah diekspor dari Figma, ganti gradient di sini dengan Image.asset.
+/// Latar + kartu putih bersudut 26px (Login, Sign up, Personal Data, Forgot Password).
+/// Latar memakai gambar dari Figma bila ada di assets, jika tidak, gradient pengganti.
 class AuthScaffold extends StatelessWidget {
   final Widget child;
   final bool blueTone; // Sign up & Personal Data memakai latar oranye-biru
@@ -15,31 +17,28 @@ class AuthScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    // Figma: kartu 343px lebar dengan jarak 25px di kiri-kanan, 87px dari atas (di layar 852px).
+    final cardWidth = math.min(343.0, size.width - 50);
+    final safeTop = MediaQuery.of(context).padding.top;
+    final top = math.max(16.0, size.height * 0.1 - safeTop);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFEFEFEF),
-      resizeToAvoidBottomInset: true,
+      backgroundColor: const Color(0xFFFE8B41),
       body: Stack(children: [
         Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: blueTone
-                    ? const [Color(0xFF4F9AC9), Color(0xFFE9A77D), Color(0xFFFE8B41), Color(0xFFB5C4CC)]
-                    : const [Color(0xFFFE8B41), Color(0xFFFFFFFF), Color(0xFFFE8B41)],
-                stops: blueTone ? const [0, .35, .6, 1] : const [0, .5, 1],
-              ),
-            ),
+          child: AppImage(
+            blueTone ? Assets.bgSignup : Assets.bgLogin,
+            fit: BoxFit.cover,
+            fallback: _fallbackBackground(),
           ),
         ),
         SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 40, bottom: 24),
+            padding: EdgeInsets.only(top: top, bottom: 40),
             child: Center(
               child: Container(
-                width: w - 50 > 343 ? 343 : w - 50,
+                width: cardWidth,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -53,6 +52,19 @@ class AuthScaffold extends StatelessWidget {
       ]),
     );
   }
+
+  Widget _fallbackBackground() => DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: blueTone
+                ? const [Color(0xFF4F9AC9), Color(0xFFE9A77D), Color(0xFFFE8B41), Color(0xFFB5C4CC)]
+                : const [Color(0xFFFE8B41), Color(0xFFFFFFFF), Color(0xFFFE8B41)],
+            stops: blueTone ? const [0, .35, .6, 1] : const [0, .5, 1],
+          ),
+        ),
+      );
 }
 
 class AppTextField extends StatefulWidget {

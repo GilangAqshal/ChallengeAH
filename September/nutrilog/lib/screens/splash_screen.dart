@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/theme.dart';
+import '../widgets/app_assets.dart';
 
 /// Splash: logo api oranye di tengah layar putih (splashscreen1-4 di Figma).
 class SplashScreen extends StatefulWidget {
@@ -38,8 +38,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         body: Center(
           child: FadeTransition(
             opacity: _c,
-            // Ganti dengan Image.asset('assets/icons/logo.png') setelah aset diekspor.
-            child: const Icon(Icons.local_fire_department, color: AppColors.orange, size: 150),
+            child: const AppLogo(size: 150),
           ),
         ),
       );

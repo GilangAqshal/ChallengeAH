@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 import '../widgets/nutrition_widgets.dart';
 import 'add_meal_screen.dart';
@@ -58,7 +58,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
     return SafeArea(
       bottom: false,
-      child: ListView(padding: const EdgeInsets.fromLTRB(0, 20, 0, 24), children: [
+      child: ListView(padding: const EdgeInsets.fromLTRB(0, 20, 0, 36), children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 37),
           child: Text('Daily\nNutrition', style: AppText.montserrat(24, weight: FontWeight.w700).copyWith(height: 1.15)),

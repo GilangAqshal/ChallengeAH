@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 import '../widgets/form_widgets.dart';
 import 'shell_screen.dart';
@@ -47,8 +46,8 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
       if (!mounted) return;
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => const ShellScreen()));
-    } on PostgrestException catch (e) {
-      if (mounted) showMsg(context, e.message);
+    } catch (e) {
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }

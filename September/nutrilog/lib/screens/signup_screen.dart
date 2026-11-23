@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 import '../widgets/form_widgets.dart';
 
@@ -63,8 +62,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // Jika "Confirm email" aktif di Supabase, pengguna harus cek email dulu.
       showMsg(context, 'Akun dibuat. Jika diminta, cek email untuk verifikasi.');
       Navigator.pop(context);
-    } on AuthException catch (e) {
-      if (mounted) showMsg(context, e.message);
+    } catch (e) {
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }

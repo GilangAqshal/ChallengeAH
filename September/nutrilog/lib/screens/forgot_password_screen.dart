@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 import '../widgets/form_widgets.dart';
 
@@ -24,8 +23,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       if (!mounted) return;
       Navigator.push(context,
           MaterialPageRoute(builder: (_) => VerifyCodeScreen(email: _email.text.trim())));
-    } on AuthException catch (e) {
-      if (mounted) showMsg(context, e.message);
+    } catch (e) {
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -68,8 +67,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
       await AuthService.verifyResetCode(widget.email, _code.text.trim());
       if (!mounted) return;
       Navigator.push(context, MaterialPageRoute(builder: (_) => const ChangePasswordScreen()));
-    } on AuthException catch (e) {
-      if (mounted) showMsg(context, e.message);
+    } catch (e) {
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -124,8 +123,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       if (!mounted) return;
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const PasswordChangedScreen()));
-    } on AuthException catch (e) {
-      if (mounted) showMsg(context, e.message);
+    } catch (e) {
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final p = _p;
     return SafeArea(
       bottom: false,
-      child: ListView(padding: const EdgeInsets.fromLTRB(22, 24, 22, 24), children: [
+      child: ListView(padding: const EdgeInsets.fromLTRB(22, 24, 22, 36), children: [
         Row(children: [
           const SizedBox(width: 24),
           Expanded(
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _row(Icons.male, 'Gender', p?['gender'] == null ? '-' : (p!['gender'] == 'male' ? 'Male' : 'Female')),
         _row(Icons.track_changes, 'Goals', p?['goal'] ?? '-'),
         _row(Icons.photo_outlined, 'Gallery', null),
-        _row(Icons.logout, 'Logout', null, onTap: () => AuthService.logout()),
+        _row(Icons.logout, 'Logout', null, onTap: () async { await AuthService.logout(); if (context.mounted) Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false); }),
       ]),
     );
   }

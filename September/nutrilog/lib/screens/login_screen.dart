@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
+import '../widgets/app_assets.dart';
+import '../widgets/brand_icons.dart';
 import '../widgets/form_widgets.dart';
 import 'forgot_password_screen.dart';
 import 'signup_screen.dart';
@@ -27,10 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _loading = true);
     try {
       await AuthService.loginWithUsername(_user.text, _pass.text);
-    } on AuthException catch (e) {
-      if (mounted) showMsg(context, e.message);
+      if (mounted) Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } catch (e) {
-      if (mounted) showMsg(context, 'Gagal login: $e');
+      if (mounted) showMsg(context, e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return AuthScaffold(
       child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(Icons.local_fire_department, color: AppColors.orange, size: 34),
+          const AppLogo(size: 38),
           const SizedBox(width: 4),
           Text('Login', style: AppText.montserrat(32, weight: FontWeight.w700, color: AppColors.headline, letterSpacing: -0.64)),
         ]),
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 10),
         SocialButton(
           text: 'Continue with Google',
-          icon: const Icon(Icons.g_mobiledata, size: 26, color: Color(0xFFEA4335)),
+          icon: const GoogleLogo(size: 18),
           onPressed: () => AuthService.signInWithGoogle(),
         ),
         const SizedBox(height: 10),

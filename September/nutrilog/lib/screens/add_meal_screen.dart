@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
+import '../widgets/app_assets.dart';
 import '../widgets/form_widgets.dart';
 
 /// Layar "Add Meals": X, logo, kolom Search Food, daftar Suggestions dengan tombol +.
@@ -45,7 +46,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
             child: Row(children: [
               InkWell(onTap: () => Navigator.pop(context), child: Text('X', style: AppText.montserrat(20))),
               const Spacer(),
-              const Icon(Icons.local_fire_department, color: AppColors.orange, size: 34),
+              const AppLogo(size: 34),
               const Spacer(),
               const SizedBox(width: 14),
             ]),

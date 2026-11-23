@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 
 /// Busur setengah lingkaran kalori (Home) - diameter 224 seperti di Figma.
@@ -203,4 +203,27 @@ class MealCard extends StatelessWidget {
       ]),
     ]);
   }
+}
+
+/// Judul seksi dengan tombol + bulat oranye ("Add Meals", "Add Water").
+class SectionAddTitle extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+  const SectionAddTitle({super.key, required this.title, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: Row(children: [
+          const SizedBox(width: 11),
+          Container(
+            width: 30,
+            height: 30,
+            decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+            child: const Icon(Icons.add, color: Colors.white, size: 22),
+          ),
+          const SizedBox(width: 10),
+          Text(title, style: AppText.kurale(32)),
+        ]),
+      );
 }

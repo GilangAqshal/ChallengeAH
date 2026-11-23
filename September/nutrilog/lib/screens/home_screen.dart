@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/supabase_service.dart';
+import '../services/services.dart';
 import '../core/theme.dart';
 import '../widgets/form_widgets.dart';
 import '../widgets/nutrition_widgets.dart';
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: RefreshIndicator(
         color: AppColors.orange,
         onRefresh: _load,
-        child: ListView(padding: const EdgeInsets.fromLTRB(24, 16, 24, 24), children: [
+        child: ListView(padding: const EdgeInsets.fromLTRB(24, 16, 24, 36), children: [
           // Header: avatar, Welcome + nama, lonceng
           Row(children: [
             const CircleAvatar(
@@ -113,21 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MacroBar(label: 'Water', caption: '$_water/2500ml', value: _water.toDouble(), max: 2500, color: AppColors.water, width: 75),
           ]),
           const SizedBox(height: 34),
-          // Add Meals
-          GestureDetector(
-            onTap: _addMeal,
-            child: Row(children: [
-              const SizedBox(width: 11),
-              Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
-                child: const Icon(Icons.add, color: Colors.white, size: 22),
-              ),
-              const SizedBox(width: 10),
-              Text('Add Meals', style: AppText.kurale(32)),
-            ]),
-          ),
+          SectionAddTitle(title: 'Add Meals', onTap: _addMeal),
           const SizedBox(height: 20),
           if (_meals.isEmpty)
             Padding(
@@ -146,29 +132,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 _load();
               },
             ),
-          // Add Water
-          GestureDetector(
+          SectionAddTitle(
+            title: 'Add Water',
             onTap: () async {
               await MealService.addWater(250);
               _load();
               if (mounted) showMsg(context, '+250 ml air');
             },
-            child: Row(children: [
-              const SizedBox(width: 11),
-              Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
-                child: const Icon(Icons.add, color: Colors.white, size: 22),
-              ),
-              const SizedBox(width: 10),
-              Text('Add Water', style: AppText.kurale(32)),
-            ]),
           ),
           const SizedBox(height: 18),
           Container(
             height: 90,
-            margin: const EdgeInsets.only(right: 60),
+            margin: EdgeInsets.zero,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: AppColors.cardBg,
