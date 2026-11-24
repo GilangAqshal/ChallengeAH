@@ -46,8 +46,6 @@ class NutriLogApp extends StatelessWidget {
           '/activity': (_) => const ShellScreen(initialIndex: 2),
           '/profile': (_) => const ShellScreen(initialIndex: 3),
           '/add-meal': (_) => const AddMealScreen(),
-          '/add-meal': (_) => const AddMealScreen(),
-          '/add-meal': (_) => const AddMealScreen(),
         },
       );
 }
