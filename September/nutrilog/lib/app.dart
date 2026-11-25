@@ -60,9 +60,9 @@ class _PhoneFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    final w = math.min(mq.size.width, 430.0);
+    final w = math.min(mq.size.width, 440.0);
     return ColoredBox(
-      color: Colors.white,
+      color: const Color(0xFF20232B),
       child: Center(
         child: SizedBox(
           width: w,

@@ -63,12 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final t = DayTotals.of(_meals);
     final name = (_profile?['username'] ?? '') as String;
 
-    return SafeArea(
+    return Container(
+      color: AppColors.pageBg,
+      child: SafeArea(
       bottom: false,
       child: RefreshIndicator(
         color: AppColors.orange,
         onRefresh: _load,
-        child: ListView(padding: const EdgeInsets.fromLTRB(24, 16, 24, 36), children: [
+        child: ListView(physics: const AlwaysScrollableScrollPhysics(), keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag, padding: const EdgeInsets.fromLTRB(20, 18, 20, 28), children: [
           // Header: avatar, Welcome + nama, lonceng
           Row(children: [
             const CircleAvatar(
@@ -103,8 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ]),
             ),
           ]),
-          const SizedBox(height: 36),
-          Center(child: KcalArc(consumed: t.kcal, target: target)),
+          const SizedBox(height: 24),
+          Container(padding: const EdgeInsets.symmetric(vertical: 18), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: const [BoxShadow(color: Color(0x0D20232B), blurRadius: 16, offset: Offset(0, 6))]), child: Center(child: KcalArc(consumed: t.kcal, target: target))),
           const SizedBox(height: 18),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             MacroBar(label: 'Protein', caption: '${t.protein.round()}/${(120 * k).round()}g', value: t.protein, max: 120 * k, color: AppColors.protein, width: 65),
@@ -112,9 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MacroBar(label: 'Carbs', caption: '${t.carbs.round()}/${(400 * k).round()}g', value: t.carbs, max: 400 * k, color: AppColors.carbs, width: 65),
             MacroBar(label: 'Water', caption: '$_water/2500ml', value: _water.toDouble(), max: 2500, color: AppColors.water, width: 75),
           ]),
-          const SizedBox(height: 34),
+          const SizedBox(height: 26),
           SectionAddTitle(title: 'Add Meals', onTap: _addMeal),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           if (_meals.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
@@ -175,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ]),
       ),
+    ),
     );
   }
 }

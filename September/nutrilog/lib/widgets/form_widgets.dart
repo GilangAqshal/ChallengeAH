@@ -12,59 +12,56 @@ const _inputShadow = [
 /// Latar memakai gambar dari Figma bila ada di assets, jika tidak, gradient pengganti.
 class AuthScaffold extends StatelessWidget {
   final Widget child;
-  final bool blueTone; // Sign up & Personal Data memakai latar oranye-biru
+  final bool blueTone;
   const AuthScaffold({super.key, required this.child, this.blueTone = false});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    // Figma: kartu 343px lebar dengan jarak 25px di kiri-kanan, 87px dari atas (di layar 852px).
-    final cardWidth = math.min(343.0, size.width - 50);
-    final safeTop = MediaQuery.of(context).padding.top;
-    final top = math.max(16.0, size.height * 0.1 - safeTop);
-
     return Scaffold(
-      backgroundColor: const Color(0xFFFE8B41),
-      body: Stack(children: [
-        Positioned.fill(
-          child: AppImage(
-            blueTone ? Assets.bgSignup : Assets.bgLogin,
-            fit: BoxFit.cover,
-            fallback: _fallbackBackground(),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppColors.orange,
+      body: Stack(fit: StackFit.expand, children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: blueTone
+                  ? const [Color(0xFFFFE8D9), Color(0xFFFFA66F), Color(0xFF8AB8D0), Color(0xFFFFE1CD)]
+                  : const [Color(0xFFFFD7BB), Color(0xFFFF9148), Color(0xFFFFB27E), Color(0xFFFFE8DA)],
+              stops: const [0, .38, .72, 1],
+            ),
           ),
         ),
         SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: top, bottom: 40),
-            child: Center(
-              child: Container(
-                width: cardWidth,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(26),
+          child: LayoutBuilder(builder: (context, constraints) {
+            return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.fromLTRB(20, 22, 20, 24),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight - 46),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 390),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(.97),
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: const [BoxShadow(color: Color(0x263D2417), blurRadius: 28, offset: Offset(0, 14))],
+                      ),
+                      child: child,
+                    ),
+                  ),
                 ),
-                child: child,
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ]),
     );
   }
-
-  Widget _fallbackBackground() => DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: blueTone
-                ? const [Color(0xFF4F9AC9), Color(0xFFE9A77D), Color(0xFFFE8B41), Color(0xFFB5C4CC)]
-                : const [Color(0xFFFE8B41), Color(0xFFFFFFFF), Color(0xFFFE8B41)],
-            stops: blueTone ? const [0, .35, .6, 1] : const [0, .5, 1],
-          ),
-        ),
-      );
 }
 
 class AppTextField extends StatefulWidget {
@@ -112,6 +109,8 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         child: TextField(
           controller: widget.controller,
+          autofocus: false,
+          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           obscureText: _hidden,
           keyboardType: widget.keyboardType,
           readOnly: widget.readOnly,

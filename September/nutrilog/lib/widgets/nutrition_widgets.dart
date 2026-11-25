@@ -151,58 +151,46 @@ class MealCard extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         width: double.infinity,
-        height: 148,
-        margin: const EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.orangeBorder),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFFFFE1CF)),
+          boxShadow: const [BoxShadow(color: Color(0x0D20232B), blurRadius: 14, offset: Offset(0, 5))],
         ),
-        child: Stack(children: [
-          Positioned(left: 15, top: 8, child: Text('$index.', style: AppText.kurale(32))),
-          Positioned(
-            left: 47,
-            top: 10,
-            right: 60,
-            child: Text(meal.name, style: AppText.montserrat(14), maxLines: 2, overflow: TextOverflow.ellipsis),
-          ),
-          Positioned(left: 26, top: 64, child: _macro(meal.protein, 'Protein', AppColors.protein, 30, 16)),
-          Positioned(left: 156, top: 64, child: _macro(meal.fat, 'Fats', AppColors.fats, 20, 14)),
-          Positioned(left: 254, top: 64, child: _macro(meal.carbs, 'Carbs', AppColors.carbs, 40, 14)),
-          Positioned(
-            left: 12,
-            top: 120,
-            child: Row(children: [
-              const Icon(Icons.local_fire_department, size: 16, color: AppColors.orange),
-              const SizedBox(width: 2),
-              Text('${meal.kcal.round()}kcal',
-                  style: AppText.poppins(12, color: AppColors.kcalText, letterSpacing: .24)),
-            ]),
-          ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Container(width: 36, height: 36, decoration: BoxDecoration(color: const Color(0xFFFFF0E7), borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.restaurant_rounded, color: AppColors.orangeDeep, size: 19)),
+            const SizedBox(width: 10),
+            Expanded(child: Text(meal.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.jakarta(14, weight: FontWeight.w700, color: AppColors.ink))),
+            Text('${meal.kcal.round()} kcal', style: AppText.jakarta(13, weight: FontWeight.w800, color: AppColors.orangeDeep)),
+          ]),
+          const SizedBox(height: 14),
+          Row(children: [
+            Expanded(child: _macroTile('Protein', meal.protein, AppColors.protein)),
+            const SizedBox(width: 8),
+            Expanded(child: _macroTile('Fat', meal.fat, AppColors.fats)),
+            const SizedBox(width: 8),
+            Expanded(child: _macroTile('Carbs', meal.carbs, AppColors.carbs)),
+          ]),
+          const SizedBox(height: 6),
+          Text('Tekan dan tahan untuk menghapus makanan', style: AppText.inter(10, color: AppColors.hint)),
         ]),
       ),
     );
   }
 
-  /// Bar vertikal setinggi 36 (abu) yang terisi dari bawah sesuai gram (maks [full] g).
-  Widget _macro(double g, String label, Color c, double full, double labelSize) {
-    final fill = (g / full).clamp(0.0, 1.0) * 36;
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-        width: 5,
-        height: 36,
-        child: Stack(alignment: Alignment.bottomCenter, children: [
-          Container(color: const Color(0xFFEDEDED)),
-          Container(height: fill, color: c),
-        ]),
-      ),
-      const SizedBox(width: 2),
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('${g.round()}g', style: AppText.poppins(12, weight: FontWeight.w700, letterSpacing: .24)),
-        Text(label, style: AppText.poppins(labelSize, color: const Color(0xB3000000), letterSpacing: .3)),
-      ]),
-    ]);
-  }
+  Widget _macroTile(String label, double value, Color color) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
+    decoration: BoxDecoration(color: const Color(0xFFFFFAF6), borderRadius: BorderRadius.circular(11)),
+    child: Row(children: [
+      Container(width: 7, height: 7, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+      const SizedBox(width: 6),
+      Expanded(child: Text(label, style: AppText.inter(10, color: AppColors.grey))),
+      Text('${value.round()}g', style: AppText.jakarta(11, weight: FontWeight.w800, color: AppColors.ink)),
+    ]),
+  );
 }
 
 /// Judul seksi dengan tombol + bulat oranye ("Add Meals", "Add Water").

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottom_nav.dart';
+import '../core/theme.dart';
 import 'activity_screen.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
@@ -27,7 +28,7 @@ class _ShellScreenState extends State<ShellScreen> {
       const ProfileScreen(),
     ];
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.pageBg,
       body: IndexedStack(index: _i, children: pages),
       bottomNavigationBar: DashNav(
         index: _i,

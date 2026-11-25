@@ -19,7 +19,7 @@ class DashNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).padding.bottom;
     return SizedBox(
-      height: 86 + bottom,
+      height: 76 + bottom,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -42,23 +42,23 @@ class DashNav extends StatelessWidget {
                     onTap: () => onChanged(i),
                     borderRadius: BorderRadius.circular(24),
                     child: SizedBox(
-                      height: 86,
+                      height: 76,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 1),
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
                             curve: Curves.easeOut,
-                            width: i == index ? 42 : 36,
-                            height: i == index ? 42 : 36,
+                            width: i == index ? 38 : 34,
+                            height: i == index ? 38 : 34,
                             decoration: BoxDecoration(
                               color: i == index ? AppColors.orangeDeep : Colors.transparent,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               _icons[i],
-                              size: i == index ? 24 : 25,
+                              size: i == index ? 22 : 21,
                               color: i == index ? Colors.white : Colors.white.withAlpha(190),
                             ),
                           ),
@@ -95,8 +95,8 @@ class _NavPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const top = 22.0;
-    const half = 49.0;
+    const top = 18.0;
+    const half = 45.0;
     final slot = size.width / 4;
     final centerX = slot * activeCenter + slot / 2;
     final p = Path()

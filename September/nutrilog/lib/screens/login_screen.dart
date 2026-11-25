@@ -17,8 +17,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _user = TextEditingController();
   final _pass = TextEditingController();
-  bool _remember = false;
+  bool _remember = true;
   bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _user.text = 'admin';
+    _pass.text = 'admin';
+  }
+
 
   Future<void> _login() async {
     if (_user.text.trim().isEmpty || _pass.text.isEmpty) {
@@ -46,8 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
           Text('Login', style: AppText.montserrat(32, weight: FontWeight.w700, color: AppColors.headline, letterSpacing: -0.64)),
         ]),
         const SizedBox(height: 24),
-        Text('Join us for a better health!',
-            style: AppText.montserrat(12, weight: FontWeight.w500, color: AppColors.grey)),
+        Text('Your daily companion for healthier choices',
+            textAlign: TextAlign.center, style: AppText.inter(12, weight: FontWeight.w500, color: AppColors.grey)),
+        const SizedBox(height: 12),
+        Container(width: double.infinity, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFFFF2E8), borderRadius: BorderRadius.circular(12)), child: Row(children: [const Icon(Icons.verified_user_outlined, color: AppColors.orangeDeep, size: 18), const SizedBox(width: 8), Expanded(child: Text('Demo account sudah diisi otomatis: admin / admin', style: AppText.inter(10, weight: FontWeight.w600, color: AppColors.title))) ])),
         const SizedBox(height: 24),
         AppTextField(label: 'Username', hint: 'enter username', controller: _user),
         const SizedBox(height: 16),
@@ -93,13 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
         SocialButton(
           text: 'Continue with Google',
           icon: const GoogleLogo(size: 18),
-          onPressed: () => AuthService.signInWithGoogle(),
+          onPressed: () => showMsg(context, 'Login Google tersedia setelah backend diaktifkan.'),
         ),
         const SizedBox(height: 10),
         SocialButton(
           text: 'Continue with Facebook',
           icon: const Icon(Icons.facebook, size: 18, color: Color(0xFF1877F2)),
-          onPressed: () => AuthService.signInWithFacebook(),
+          onPressed: () => showMsg(context, 'Login Facebook tersedia setelah backend diaktifkan.'),
         ),
       ]),
     );

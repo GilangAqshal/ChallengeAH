@@ -56,12 +56,14 @@ class _ActivityScreenState extends State<ActivityScreen> {
     // 7 hari terakhir sampai hari ini + 1 hari ke depan, seperti strip tanggal di Figma.
     final days = List.generate(9, (i) => DateTime(today.year, today.month, today.day).subtract(Duration(days: 7 - i)));
 
-    return SafeArea(
+    return Container(
+      color: AppColors.pageBg,
+      child: SafeArea(
       bottom: false,
-      child: ListView(padding: const EdgeInsets.fromLTRB(0, 20, 0, 36), children: [
+      child: ListView(physics: const AlwaysScrollableScrollPhysics(), keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag, padding: const EdgeInsets.fromLTRB(0, 18, 0, 28), children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 37),
-          child: Text('Daily\nNutrition', style: AppText.montserrat(24, weight: FontWeight.w700).copyWith(height: 1.15)),
+          child: Text('Daily Nutrition', style: AppText.jakarta(23, weight: FontWeight.w800, color: AppColors.ink)),
         ),
         const SizedBox(height: 18),
         SizedBox(
@@ -98,10 +100,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
             },
           ),
         ),
-        const SizedBox(height: 22),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Row(children: [
+        const SizedBox(height: 18),
+        Container(margin: const EdgeInsets.symmetric(horizontal: 16), padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: const [BoxShadow(color: Color(0x0D20232B), blurRadius: 14, offset: Offset(0, 5))]), child: Row(children: [
             Expanded(
               child: Wrap(runSpacing: 22, spacing: 18, children: [
                 MacroBar(label: 'Protein', caption: '${t.protein.round()}/${(120 * k).round()}g', value: t.protein, max: 120 * k, color: AppColors.protein, width: 70),
@@ -111,11 +111,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ]),
             ),
             KcalRing(consumed: t.kcal, target: _target),
-          ]),
-        ),
+          ])),
         const SizedBox(height: 26),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 23),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(children: [
             for (var i = 0; i < _meals.length; i++)
               MealCard(
@@ -138,6 +137,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           ]),
         ),
       ]),
+      ),
     );
   }
 }
